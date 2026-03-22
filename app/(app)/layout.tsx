@@ -10,9 +10,11 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   } = await supabase.auth.getUser()
 
   return (
-    <div className="flex h-full">
+    <div className="flex h-full print-layout">
       <Sidebar user={user} />
-      <main className="flex-1 overflow-y-auto bg-zinc-50">{children}</main>
+      <main className="flex-1 overflow-y-auto bg-zinc-50 print:overflow-visible print:bg-white print:h-auto">
+        {children}
+      </main>
     </div>
   )
 }

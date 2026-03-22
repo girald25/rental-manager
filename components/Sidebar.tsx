@@ -13,6 +13,7 @@ import {
   Wrench,
   HardHat,
   FolderOpen,
+  BarChart,
   LogOut,
 } from 'lucide-react'
 import { signOut } from '@/app/actions/auth'
@@ -28,6 +29,7 @@ const nav = [
   { href: '/maintenance', label: 'Maintenance', icon: Wrench },
   { href: '/projects', label: 'Projects', icon: HardHat },
   { href: '/documents', label: 'Documents', icon: FolderOpen },
+  { href: '/reports', label: 'Reports', icon: BarChart },
   { href: '/finances', label: 'Finances', icon: BarChart2 },
 ]
 
@@ -36,7 +38,7 @@ export default function Sidebar({ user }: { user: User | null }) {
   const initials = user?.email ? user.email.slice(0, 2).toUpperCase() : '??'
 
   return (
-    <aside className="w-60 shrink-0 bg-white border-r border-zinc-200 flex flex-col h-full">
+    <aside className="w-60 shrink-0 bg-white border-r border-zinc-200 flex flex-col h-full print:hidden">
       {/* Logo */}
       <div className="px-5 py-5 border-b border-zinc-100">
         <div className="flex items-center gap-2">
