@@ -61,3 +61,27 @@ export async function deleteBuilding(id: string): Promise<ActionState> {
   revalidatePath('/dashboard')
   return { success: true }
 }
+
+export async function updateBuildingFinancials(
+  id: string,
+  prevState: ActionState,
+  formData: FormData
+): Promise<ActionState> {
+  const cookieStore = await cookies()
+  const supabase = createClient(cookieStore)
+
+  const investment = formData.get('investment_value')
+  const market = formData.get('market_value')
+
+  const { error } = await supabase
+    .from('buildings')
+    .update({
+      investment_value: investment ? Number(investment) : null,
+      market_value: market ? Number(market) : null,
+    })
+    .eq('id', id)
+
+  if (error) return { error: error.message }
+  revalidatePath('/finances')
+  return { success: true }
+}

@@ -9,6 +9,7 @@ import {
   Users,
   FileText,
   CreditCard,
+  BarChart2,
   Wrench,
   LogOut,
 } from 'lucide-react'
@@ -22,6 +23,7 @@ const nav = [
   { href: '/tenants', label: 'Tenants', icon: Users },
   { href: '/leases', label: 'Leases', icon: FileText },
   { href: '/payments', label: 'Payments', icon: CreditCard },
+  { href: '/finances', label: 'Finances', icon: BarChart2 },
   { href: '/maintenance', label: 'Maintenance', icon: Wrench },
 ]
 

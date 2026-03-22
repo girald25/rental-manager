@@ -6,6 +6,8 @@ create table if not exists buildings (
   city text not null,
   state text not null,
   zip text not null,
+  investment_value numeric(12,2),
+  market_value numeric(12,2),
   created_at timestamptz default now()
 );
 
@@ -70,5 +72,34 @@ create table if not exists maintenance_requests (
   priority text not null default 'medium' check (priority in ('low', 'medium', 'high', 'urgent')),
   notes text,
   completed_at timestamptz,
+  created_at timestamptz default now()
+);
+
+-- Expenses
+create table if not exists expenses (
+  id uuid default gen_random_uuid() primary key,
+  user_id uuid references auth.users(id) default auth.uid(),
+  building_id uuid references buildings(id) on delete set null,
+  unit_id uuid references units(id) on delete set null,
+  category text not null check (category in (
+    'maintenance','utilities','insurance','taxes','repairs','capex','management','other'
+  )),
+  description text not null,
+  amount numeric(10,2) not null,
+  date date not null,
+  receipt_url text,
+  created_at timestamptz default now()
+);
+
+-- Other Income (late fees, parking, laundry, etc.)
+create table if not exists other_income (
+  id uuid default gen_random_uuid() primary key,
+  user_id uuid references auth.users(id) default auth.uid(),
+  building_id uuid references buildings(id) on delete set null,
+  unit_id uuid references units(id) on delete set null,
+  category text not null check (category in ('late_fee','parking','laundry','pet_fee','other')),
+  description text not null,
+  amount numeric(10,2) not null,
+  date date not null,
   created_at timestamptz default now()
 );

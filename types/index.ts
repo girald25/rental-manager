@@ -5,6 +5,8 @@ export type Building = {
   city: string
   state: string
   zip: string
+  investment_value: number | null
+  market_value: number | null
   created_at: string
 }
 
@@ -70,6 +72,74 @@ export type MaintenanceRequest = {
   completed_at: string | null
   created_at: string
   unit?: Unit & { building?: Building }
+}
+
+export type ExpenseCategory =
+  | 'maintenance'
+  | 'utilities'
+  | 'insurance'
+  | 'taxes'
+  | 'repairs'
+  | 'capex'
+  | 'management'
+  | 'other'
+
+export type Expense = {
+  id: string
+  user_id: string
+  building_id: string | null
+  unit_id: string | null
+  category: ExpenseCategory
+  description: string
+  amount: number
+  date: string
+  receipt_url: string | null
+  created_at: string
+  building?: { id: string; name: string }
+  unit?: { id: string; unit_number: string }
+}
+
+export type OtherIncomeCategory = 'late_fee' | 'parking' | 'laundry' | 'pet_fee' | 'other'
+
+export type OtherIncome = {
+  id: string
+  user_id: string
+  building_id: string | null
+  unit_id: string | null
+  category: OtherIncomeCategory
+  description: string
+  amount: number
+  date: string
+  created_at: string
+  building?: { id: string; name: string }
+  unit?: { id: string; unit_number: string }
+}
+
+export type MonthlyFinancialData = {
+  month: string
+  income: number
+  expenses: number
+  noi: number
+  runningBalance: number
+}
+
+export type CategoryBreakdown = {
+  name: string
+  value: number
+  color: string
+}
+
+export type FinanceMetrics = {
+  noi: number
+  annualIncome: number
+  annualExpenses: number
+  cashOnCash: number | null
+  grm: number | null
+  vacancyRate: number
+  oer: number
+  capRate: number | null
+  totalInvestment: number
+  totalMarketValue: number
 }
 
 export type ActionState = { error?: string; success?: boolean } | null
