@@ -142,6 +142,32 @@ export type FinanceMetrics = {
   totalMarketValue: number
 }
 
+export type DocumentCategory =
+  | 'contract'
+  | 'lease'
+  | 'photo'
+  | 'invoice'
+  | 'inspection'
+  | 'other'
+
+export type Document = {
+  id: string
+  user_id: string
+  building_id: string | null
+  unit_id: string | null
+  tenant_id: string | null
+  name: string
+  description: string | null
+  category: DocumentCategory
+  file_url: string
+  file_type: string | null
+  file_size: number | null
+  created_at: string
+  building?: { id: string; name: string }
+  unit?: { id: string; unit_number: string }
+  tenant?: { id: string; first_name: string; last_name: string }
+}
+
 export type ProjectStatus = 'planning' | 'in_progress' | 'on_hold' | 'completed'
 export type ProjectPriority = 'low' | 'medium' | 'high' | 'urgent'
 

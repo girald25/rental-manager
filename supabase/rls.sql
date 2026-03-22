@@ -22,6 +22,7 @@ ALTER TABLE payments              ENABLE ROW LEVEL SECURITY;
 ALTER TABLE maintenance_requests  ENABLE ROW LEVEL SECURITY;
 ALTER TABLE expenses              ENABLE ROW LEVEL SECURITY;
 ALTER TABLE other_income          ENABLE ROW LEVEL SECURITY;
+ALTER TABLE documents             ENABLE ROW LEVEL SECURITY;
 ALTER TABLE projects              ENABLE ROW LEVEL SECURITY;
 ALTER TABLE project_notes         ENABLE ROW LEVEL SECURITY;
 
@@ -34,6 +35,7 @@ DROP POLICY IF EXISTS "users_own_payments"     ON payments;
 DROP POLICY IF EXISTS "users_own_maintenance"  ON maintenance_requests;
 DROP POLICY IF EXISTS "users_own_expenses"      ON expenses;
 DROP POLICY IF EXISTS "users_own_other_income"  ON other_income;
+DROP POLICY IF EXISTS "users_own_documents"     ON documents;
 DROP POLICY IF EXISTS "users_own_projects"      ON projects;
 DROP POLICY IF EXISTS "users_own_project_notes" ON project_notes;
 
@@ -94,12 +96,17 @@ CREATE POLICY "users_own_other_income" ON other_income
   FOR ALL USING (auth.uid() = user_id)
   WITH CHECK (auth.uid() = user_id);
 
--- 13. Projects — direct user_id
+-- 13. Documents — direct user_id
+CREATE POLICY "users_own_documents" ON documents
+  FOR ALL USING (auth.uid() = user_id)
+  WITH CHECK (auth.uid() = user_id);
+
+-- 14. Projects — direct user_id
 CREATE POLICY "users_own_projects" ON projects
   FOR ALL USING (auth.uid() = user_id)
   WITH CHECK (auth.uid() = user_id);
 
--- 14. Project notes — via project → user_id
+-- 15. Project notes — via project → user_id
 CREATE POLICY "users_own_project_notes" ON project_notes
   FOR ALL USING (
     project_id IN (SELECT id FROM projects WHERE user_id = auth.uid())

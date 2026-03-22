@@ -12,6 +12,7 @@ import {
   BarChart2,
   Wrench,
   HardHat,
+  FolderOpen,
   LogOut,
 } from 'lucide-react'
 import { signOut } from '@/app/actions/auth'
@@ -26,6 +27,7 @@ const nav = [
   { href: '/payments', label: 'Payments', icon: CreditCard },
   { href: '/maintenance', label: 'Maintenance', icon: Wrench },
   { href: '/projects', label: 'Projects', icon: HardHat },
+  { href: '/documents', label: 'Documents', icon: FolderOpen },
   { href: '/finances', label: 'Finances', icon: BarChart2 },
 ]
 

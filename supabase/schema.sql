@@ -91,6 +91,23 @@ create table if not exists expenses (
   created_at timestamptz default now()
 );
 
+-- Documents (contracts, photos, invoices, etc.)
+create table if not exists documents (
+  id          uuid        default gen_random_uuid() primary key,
+  user_id     uuid        references auth.users(id) default auth.uid(),
+  building_id uuid        references buildings(id) on delete set null,
+  unit_id     uuid        references units(id)     on delete set null,
+  tenant_id   uuid        references tenants(id)   on delete set null,
+  name        text        not null,
+  description text,
+  category    text        not null default 'other'
+                check (category in ('contract','lease','photo','invoice','inspection','other')),
+  file_url    text        not null,
+  file_type   text,
+  file_size   bigint,
+  created_at  timestamptz default now()
+);
+
 -- Projects (construction / renovation)
 create table if not exists projects (
   id                  uuid        default gen_random_uuid() primary key,
