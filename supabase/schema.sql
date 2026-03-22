@@ -91,6 +91,38 @@ create table if not exists expenses (
   created_at timestamptz default now()
 );
 
+-- Projects (construction / renovation)
+create table if not exists projects (
+  id                  uuid        default gen_random_uuid() primary key,
+  user_id             uuid        references auth.users(id) default auth.uid(),
+  building_id         uuid        references buildings(id) on delete set null,
+  unit_id             uuid        references units(id)     on delete set null,
+  title               text        not null,
+  description         text,
+  status              text        not null default 'planning'
+                        check (status in ('planning','in_progress','on_hold','completed')),
+  priority            text        not null default 'medium'
+                        check (priority in ('low','medium','high','urgent')),
+  budget              numeric(12,2),
+  actual_cost         numeric(12,2),
+  progress            integer     not null default 0 check (progress between 0 and 100),
+  contractor_name     text,
+  contractor_contact  text,
+  start_date          date,
+  estimated_end_date  date,
+  actual_end_date     date,
+  created_at          timestamptz default now(),
+  updated_at          timestamptz default now()
+);
+
+-- Project notes / updates log
+create table if not exists project_notes (
+  id          uuid        default gen_random_uuid() primary key,
+  project_id  uuid        references projects(id) on delete cascade,
+  note        text        not null,
+  created_at  timestamptz default now()
+);
+
 -- Other Income (late fees, parking, laundry, etc.)
 create table if not exists other_income (
   id uuid default gen_random_uuid() primary key,

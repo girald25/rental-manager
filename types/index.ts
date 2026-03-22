@@ -142,4 +142,38 @@ export type FinanceMetrics = {
   totalMarketValue: number
 }
 
+export type ProjectStatus = 'planning' | 'in_progress' | 'on_hold' | 'completed'
+export type ProjectPriority = 'low' | 'medium' | 'high' | 'urgent'
+
+export type Project = {
+  id: string
+  user_id: string
+  building_id: string | null
+  unit_id: string | null
+  title: string
+  description: string | null
+  status: ProjectStatus
+  priority: ProjectPriority
+  budget: number | null
+  actual_cost: number | null
+  progress: number
+  contractor_name: string | null
+  contractor_contact: string | null
+  start_date: string | null
+  estimated_end_date: string | null
+  actual_end_date: string | null
+  created_at: string
+  updated_at: string
+  building?: { id: string; name: string }
+  unit?: { id: string; unit_number: string }
+  notes?: ProjectNote[]
+}
+
+export type ProjectNote = {
+  id: string
+  project_id: string
+  note: string
+  created_at: string
+}
+
 export type ActionState = { error?: string; success?: boolean } | null

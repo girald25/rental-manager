@@ -11,6 +11,7 @@ import {
   CreditCard,
   BarChart2,
   Wrench,
+  HardHat,
   LogOut,
 } from 'lucide-react'
 import { signOut } from '@/app/actions/auth'
@@ -23,8 +24,9 @@ const nav = [
   { href: '/tenants', label: 'Tenants', icon: Users },
   { href: '/leases', label: 'Leases', icon: FileText },
   { href: '/payments', label: 'Payments', icon: CreditCard },
-  { href: '/finances', label: 'Finances', icon: BarChart2 },
   { href: '/maintenance', label: 'Maintenance', icon: Wrench },
+  { href: '/projects', label: 'Projects', icon: HardHat },
+  { href: '/finances', label: 'Finances', icon: BarChart2 },
 ]
 
 export default function Sidebar({ user }: { user: User | null }) {

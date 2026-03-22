@@ -54,7 +54,7 @@ export default async function FinancesPage() {
   ] = await Promise.all([
     supabase
       .from('payments')
-      .select('amount, paid_date, lease:leases(tenant:tenants(first_name, last_name), unit:units(unit_number, building:buildings(name)))')
+      .select('id, amount, paid_date, lease:leases(tenant:tenants(first_name, last_name), unit:units(unit_number, building:buildings(name)))')
       .eq('status', 'paid')
       .order('paid_date', { ascending: false }),
     supabase
