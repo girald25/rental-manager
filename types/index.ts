@@ -203,3 +203,56 @@ export type ProjectNote = {
 }
 
 export type ActionState = { error?: string; success?: boolean } | null
+
+export type TenantInvitation = {
+  id: string
+  tenant_id: string
+  email: string
+  token: string
+  expires_at: string
+  accepted_at: string | null
+  created_at: string
+  tenant?: Tenant
+}
+
+export type MaintenanceTicket = {
+  id: string
+  tenant_id: string
+  unit_id: string
+  title: string
+  description: string | null
+  status: 'open' | 'in_progress' | 'completed'
+  priority: 'low' | 'medium' | 'high' | 'urgent'
+  notes: string | null
+  completed_at: string | null
+  created_at: string
+  updated_at: string
+  tenant?: Tenant
+  unit?: Unit & { building?: Building }
+}
+
+export type Notification = {
+  id: string
+  user_id: string
+  title: string
+  body: string
+  type: 'info' | 'success' | 'warning' | 'error'
+  read: boolean
+  link: string | null
+  created_at: string
+}
+
+export type OwnerSettings = {
+  id: string
+  user_id: string
+  stripe_account_id: string | null
+  ath_movil_phone: string | null
+  bank_name: string | null
+  bank_routing: string | null
+  bank_account: string | null
+  bank_account_name: string | null
+  accept_cash: boolean
+  accept_check: boolean
+  created_at: string
+  updated_at: string
+}

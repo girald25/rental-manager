@@ -1,6 +1,8 @@
 import { createClient } from '@/utils/supabase/server'
 import { cookies } from 'next/headers'
-import Sidebar from '@/components/Sidebar'
+import TopNav from '@/components/TopNav'
+import { Analytics } from '@vercel/analytics/next'
+import { getNotifications } from '@/app/actions/notifications'
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   const cookieStore = await cookies()
@@ -9,12 +11,15 @@ export default async function AppLayout({ children }: { children: React.ReactNod
     data: { user },
   } = await supabase.auth.getUser()
 
+  const notifications = await getNotifications()
+
   return (
-    <div className="flex h-full print-layout">
-      <Sidebar user={user} />
-      <main className="flex-1 overflow-y-auto bg-zinc-50 print:overflow-visible print:bg-white print:h-auto">
+    <div className="flex flex-col h-full print-layout">
+      <TopNav user={user} notifications={notifications} />
+      <main className="flex-1 overflow-y-auto bg-[#f0f4f0] dark:bg-[#0f1117] pb-16 md:pb-0 print:overflow-visible print:bg-white print:h-auto">
         {children}
       </main>
+      <Analytics />
     </div>
   )
 }

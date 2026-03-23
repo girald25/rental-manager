@@ -18,7 +18,7 @@ export default async function MaintenancePage() {
   ])
 
   return (
-    <div className="p-8">
+    <div className="p-4 md:p-8">
       <MaintenanceClient requests={requests ?? []} units={units ?? []} />
     </div>
   )

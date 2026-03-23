@@ -26,18 +26,18 @@ export default function Modal({ open, onClose, title, children }: ModalProps) {
   return (
     <div
       ref={overlayRef}
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 z-50 flex items-end md:items-center md:justify-center md:p-4"
       onClick={(e) => {
         if (e.target === overlayRef.current) onClose()
       }}
     >
-      <div className="absolute inset-0 bg-black/20" />
-      <div className="relative bg-white rounded-xl border border-zinc-200 shadow-xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
-        <div className="flex items-center justify-between px-5 py-4 border-b border-zinc-100">
-          <h2 className="text-sm font-semibold text-zinc-900">{title}</h2>
+      <div className="absolute inset-0 bg-black/40 dark:bg-black/60" />
+      <div className="relative bg-white dark:bg-[#1e2130] rounded-t-2xl md:rounded-2xl border border-[#e8edf0] dark:border-[#2d3148] shadow-xl w-full md:max-w-lg max-h-[92dvh] md:max-h-[90vh] overflow-y-auto">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-[#f0f4f0] dark:border-[#2d3148]">
+          <h2 className="text-sm font-semibold text-[#1a1a2e] dark:text-slate-100">{title}</h2>
           <button
             onClick={onClose}
-            className="p-1 rounded-md text-zinc-400 hover:text-zinc-700 hover:bg-zinc-100 transition-colors"
+            className="p-1 rounded-lg text-[#94a3b8] dark:text-slate-500 hover:text-[#1a1a2e] dark:hover:text-slate-200 hover:bg-[#f0f4f0] dark:hover:bg-white/5 transition-colors"
           >
             <X size={16} />
           </button>

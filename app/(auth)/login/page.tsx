@@ -7,7 +7,7 @@ import { signIn } from '@/app/actions/auth'
 import SubmitButton from '@/components/SubmitButton'
 
 const input =
-  'w-full border border-zinc-200 rounded-md px-3 py-2 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-1 focus:ring-zinc-900 focus:border-zinc-900 transition-colors'
+  'w-full border border-[#2d3148] rounded-lg px-3 py-2.5 text-sm text-slate-100 bg-[#252836] placeholder:text-slate-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 transition-colors'
 
 export default function LoginPage() {
   const [state, formAction] = useActionState(signIn, null)
@@ -16,34 +16,34 @@ export default function LoginPage() {
     <div className="w-full max-w-sm">
       {/* Logo */}
       <div className="flex items-center gap-2 mb-8">
-        <Building2 size={18} className="text-zinc-900" />
-        <span className="text-sm font-semibold text-zinc-900 tracking-tight">RentManager</span>
+        <Building2 size={18} className="text-emerald-400" />
+        <span className="text-sm font-semibold text-white tracking-tight">RentManager</span>
       </div>
 
-      <div className="bg-white border border-zinc-200 rounded-xl p-7">
-        <h1 className="text-base font-semibold text-zinc-900 mb-0.5">Sign in</h1>
-        <p className="text-sm text-zinc-500 mb-6">Enter your credentials to continue</p>
+      <div className="bg-[#1e2130] border border-[#2d3148] rounded-xl p-7">
+        <h1 className="text-base font-semibold text-white mb-0.5">Iniciar sesión</h1>
+        <p className="text-sm text-slate-400 mb-6">Ingresa tus credenciales para continuar</p>
 
         {state?.error && (
-          <div className="mb-4 px-3 py-2.5 bg-red-50 border border-red-100 rounded-md text-xs text-red-700">
+          <div className="mb-4 px-3 py-2.5 bg-red-500/10 border border-red-500/20 rounded-md text-xs text-red-400">
             {state.error}
           </div>
         )}
 
         <form action={formAction} className="space-y-3">
           <div>
-            <label className="block text-xs font-medium text-zinc-600 mb-1.5">Email</label>
+            <label className="block text-xs font-medium text-slate-400 mb-1.5">Correo electrónico</label>
             <input
               name="email"
               type="email"
               required
               autoComplete="email"
               className={input}
-              placeholder="you@example.com"
+              placeholder="tu@ejemplo.com"
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-zinc-600 mb-1.5">Password</label>
+            <label className="block text-xs font-medium text-slate-400 mb-1.5">Contraseña</label>
             <input
               name="password"
               type="password"
@@ -54,17 +54,17 @@ export default function LoginPage() {
             />
           </div>
           <SubmitButton
-            label="Sign in"
-            pendingLabel="Signing in…"
-            className="w-full px-3 py-2 bg-zinc-900 text-white text-sm font-medium rounded-md hover:bg-zinc-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors mt-1"
+            label="Iniciar sesión"
+            pendingLabel="Iniciando…"
+            className="w-full px-3 py-2.5 bg-emerald-600 text-white text-sm font-medium rounded-lg hover:bg-emerald-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors mt-1"
           />
         </form>
       </div>
 
-      <p className="text-center text-xs text-zinc-500 mt-5">
-        Don&apos;t have an account?{' '}
-        <Link href="/signup" className="text-zinc-900 font-medium hover:underline">
-          Sign up
+      <p className="text-center text-xs text-slate-500 mt-5">
+        ¿No tienes cuenta?{' '}
+        <Link href="/signup" className="text-emerald-400 font-medium hover:text-emerald-300">
+          Regístrate
         </Link>
       </p>
     </div>

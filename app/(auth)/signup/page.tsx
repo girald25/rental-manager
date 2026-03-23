@@ -7,7 +7,7 @@ import { signUp } from '@/app/actions/auth'
 import SubmitButton from '@/components/SubmitButton'
 
 const input =
-  'w-full border border-zinc-200 rounded-md px-3 py-2 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-1 focus:ring-zinc-900 focus:border-zinc-900 transition-colors'
+  'w-full border border-[#2d3148] rounded-lg px-3 py-2.5 text-sm text-slate-100 bg-[#252836] placeholder:text-slate-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 transition-colors'
 
 export default function SignupPage() {
   const [state, formAction] = useActionState(signUp, null)
@@ -16,20 +16,20 @@ export default function SignupPage() {
     return (
       <div className="w-full max-w-sm">
         <div className="flex items-center gap-2 mb-8">
-          <Building2 size={18} className="text-zinc-900" />
-          <span className="text-sm font-semibold text-zinc-900 tracking-tight">RentManager</span>
+          <Building2 size={18} className="text-emerald-400" />
+          <span className="text-sm font-semibold text-white tracking-tight">RentManager</span>
         </div>
-        <div className="bg-white border border-zinc-200 rounded-xl p-7 text-center">
-          <div className="w-9 h-9 bg-zinc-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Building2 size={16} className="text-zinc-600" />
+        <div className="bg-[#1e2130] border border-[#2d3148] rounded-xl p-7 text-center">
+          <div className="w-9 h-9 bg-emerald-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Building2 size={16} className="text-emerald-400" />
           </div>
-          <h2 className="text-sm font-semibold text-zinc-900 mb-1.5">Check your email</h2>
-          <p className="text-xs text-zinc-500 leading-relaxed">{state.message}</p>
+          <h2 className="text-sm font-semibold text-white mb-1.5">Revisa tu correo</h2>
+          <p className="text-xs text-slate-400 leading-relaxed">{state.message}</p>
           <Link
             href="/login"
-            className="inline-block mt-5 text-xs font-medium text-zinc-900 hover:underline"
+            className="inline-block mt-5 text-xs font-medium text-emerald-400 hover:text-emerald-300"
           >
-            Back to sign in →
+            Volver a iniciar sesión →
           </Link>
         </div>
       </div>
@@ -40,45 +40,45 @@ export default function SignupPage() {
     <div className="w-full max-w-sm">
       {/* Logo */}
       <div className="flex items-center gap-2 mb-8">
-        <Building2 size={18} className="text-zinc-900" />
-        <span className="text-sm font-semibold text-zinc-900 tracking-tight">RentManager</span>
+        <Building2 size={18} className="text-emerald-400" />
+        <span className="text-sm font-semibold text-white tracking-tight">RentManager</span>
       </div>
 
-      <div className="bg-white border border-zinc-200 rounded-xl p-7">
-        <h1 className="text-base font-semibold text-zinc-900 mb-0.5">Create account</h1>
-        <p className="text-sm text-zinc-500 mb-6">Start managing your properties</p>
+      <div className="bg-[#1e2130] border border-[#2d3148] rounded-xl p-7">
+        <h1 className="text-base font-semibold text-white mb-0.5">Crear cuenta</h1>
+        <p className="text-sm text-slate-400 mb-6">Comienza a administrar tus propiedades</p>
 
         {state?.error && (
-          <div className="mb-4 px-3 py-2.5 bg-red-50 border border-red-100 rounded-md text-xs text-red-700">
+          <div className="mb-4 px-3 py-2.5 bg-red-500/10 border border-red-500/20 rounded-md text-xs text-red-400">
             {state.error}
           </div>
         )}
 
         <form action={formAction} className="space-y-3">
           <div>
-            <label className="block text-xs font-medium text-zinc-600 mb-1.5">Email</label>
+            <label className="block text-xs font-medium text-slate-400 mb-1.5">Correo electrónico</label>
             <input
               name="email"
               type="email"
               required
               autoComplete="email"
               className={input}
-              placeholder="you@example.com"
+              placeholder="tu@ejemplo.com"
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-zinc-600 mb-1.5">Password</label>
+            <label className="block text-xs font-medium text-slate-400 mb-1.5">Contraseña</label>
             <input
               name="password"
               type="password"
               required
               autoComplete="new-password"
               className={input}
-              placeholder="At least 6 characters"
+              placeholder="Mínimo 6 caracteres"
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-zinc-600 mb-1.5">Confirm password</label>
+            <label className="block text-xs font-medium text-slate-400 mb-1.5">Confirmar contraseña</label>
             <input
               name="confirm_password"
               type="password"
@@ -89,17 +89,17 @@ export default function SignupPage() {
             />
           </div>
           <SubmitButton
-            label="Create account"
-            pendingLabel="Creating account…"
-            className="w-full px-3 py-2 bg-zinc-900 text-white text-sm font-medium rounded-md hover:bg-zinc-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors mt-1"
+            label="Crear cuenta"
+            pendingLabel="Creando cuenta…"
+            className="w-full px-3 py-2.5 bg-emerald-600 text-white text-sm font-medium rounded-lg hover:bg-emerald-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors mt-1"
           />
         </form>
       </div>
 
-      <p className="text-center text-xs text-zinc-500 mt-5">
-        Already have an account?{' '}
-        <Link href="/login" className="text-zinc-900 font-medium hover:underline">
-          Sign in
+      <p className="text-center text-xs text-slate-500 mt-5">
+        ¿Ya tienes cuenta?{' '}
+        <Link href="/login" className="text-emerald-400 font-medium hover:text-emerald-300">
+          Inicia sesión
         </Link>
       </p>
     </div>

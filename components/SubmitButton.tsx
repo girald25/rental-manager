@@ -16,7 +16,7 @@ export default function SubmitButton({ label, pendingLabel, className }: SubmitB
       disabled={pending}
       className={
         className ??
-        'px-3 py-1.5 bg-zinc-900 text-white text-sm font-medium rounded-md hover:bg-zinc-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors'
+        'px-3 py-1.5 bg-emerald-600 text-white text-sm font-medium rounded-md hover:bg-emerald-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors'
       }
     >
       {pending ? (pendingLabel ?? 'Saving…') : label}

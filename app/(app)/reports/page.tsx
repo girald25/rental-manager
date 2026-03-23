@@ -51,7 +51,7 @@ export default async function ReportsPage() {
   ])
 
   return (
-    <div className="p-8">
+    <div className="p-4 md:p-8">
       <ReportsClient
         units={(units as any) ?? []}
         leases={(leases as any) ?? []}

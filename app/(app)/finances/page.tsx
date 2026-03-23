@@ -151,7 +151,7 @@ export default async function FinancesPage() {
   }
 
   return (
-    <div className="p-8">
+    <div className="p-4 md:p-8">
       <FinancesClient
         metrics={metrics}
         monthlyData={monthly}

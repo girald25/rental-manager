@@ -31,13 +31,13 @@ function ChartTooltip({
 }) {
   if (!active || !payload?.length) return null
   return (
-    <div className="bg-white border border-zinc-200 rounded-lg shadow-lg px-3 py-2.5 text-xs">
-      {label && <p className="font-medium text-zinc-900 mb-1.5">{label}</p>}
+    <div className="bg-white border border-[#e8edf0] rounded-lg shadow-lg px-3 py-2.5 text-xs">
+      {label && <p className="font-medium text-[#1a1a2e] mb-1.5">{label}</p>}
       {payload.map((entry: any) => (
         <div key={entry.name} className="flex items-center gap-2">
           <span className="w-2 h-2 rounded-full" style={{ background: entry.color || entry.fill }} />
-          <span className="text-zinc-500 capitalize">{entry.name}:</span>
-          <span className="font-medium text-zinc-900">${Number(entry.value).toLocaleString()}</span>
+          <span className="text-[#64748b] capitalize">{entry.name}:</span>
+          <span className="font-medium text-[#1a1a2e]">${Number(entry.value).toLocaleString()}</span>
         </div>
       ))}
     </div>
@@ -48,17 +48,17 @@ export function IncomeExpenseChart({ data }: { data: MonthlyFinancialData[] }) {
   return (
     <ResponsiveContainer width="100%" height={220}>
       <BarChart data={data} barGap={2} barCategoryGap="30%">
-        <CartesianGrid strokeDasharray="3 3" stroke="#F4F4F5" vertical={false} />
-        <XAxis dataKey="month" tick={{ fontSize: 11, fill: '#A1A1AA' }} tickLine={false} axisLine={false} />
-        <YAxis tickFormatter={fmt} tick={{ fontSize: 11, fill: '#A1A1AA' }} tickLine={false} axisLine={false} width={48} />
-        <Tooltip content={<ChartTooltip />} cursor={{ fill: '#F4F4F5' }} />
+        <CartesianGrid strokeDasharray="3 3" stroke="#e8edf0" vertical={false} />
+        <XAxis dataKey="month" tick={{ fontSize: 11, fill: '#64748b' }} tickLine={false} axisLine={false} />
+        <YAxis tickFormatter={fmt} tick={{ fontSize: 11, fill: '#64748b' }} tickLine={false} axisLine={false} width={48} />
+        <Tooltip content={<ChartTooltip />} cursor={{ fill: 'rgba(240,244,240,0.8)' }} />
         <Legend
           iconType="square"
           iconSize={8}
-          formatter={(v) => <span style={{ fontSize: 11, color: '#71717A', textTransform: 'capitalize' }}>{v}</span>}
+          formatter={(v) => <span style={{ fontSize: 11, color: '#94a3b8', textTransform: 'capitalize' }}>{v}</span>}
         />
-        <Bar dataKey="income" fill="#18181B" radius={[3, 3, 0, 0]} name="income" />
-        <Bar dataKey="expenses" fill="#D4D4D8" radius={[3, 3, 0, 0]} name="expenses" />
+        <Bar dataKey="income" fill="#10b981" radius={[3, 3, 0, 0]} name="ingresos" />
+        <Bar dataKey="expenses" fill="#cbd5e1" radius={[3, 3, 0, 0]} name="gastos" />
       </BarChart>
     </ResponsiveContainer>
   )
@@ -68,27 +68,27 @@ export function NOITrendChart({ data }: { data: MonthlyFinancialData[] }) {
   return (
     <ResponsiveContainer width="100%" height={220}>
       <LineChart data={data}>
-        <CartesianGrid strokeDasharray="3 3" stroke="#F4F4F5" vertical={false} />
-        <XAxis dataKey="month" tick={{ fontSize: 11, fill: '#A1A1AA' }} tickLine={false} axisLine={false} />
-        <YAxis tickFormatter={fmt} tick={{ fontSize: 11, fill: '#A1A1AA' }} tickLine={false} axisLine={false} width={48} />
+        <CartesianGrid strokeDasharray="3 3" stroke="#e8edf0" vertical={false} />
+        <XAxis dataKey="month" tick={{ fontSize: 11, fill: '#64748b' }} tickLine={false} axisLine={false} />
+        <YAxis tickFormatter={fmt} tick={{ fontSize: 11, fill: '#64748b' }} tickLine={false} axisLine={false} width={48} />
         <Tooltip content={<ChartTooltip />} />
         <Line
           type="monotone"
           dataKey="noi"
-          stroke="#18181B"
+          stroke="#10b981"
           strokeWidth={2}
           dot={false}
-          activeDot={{ r: 4, fill: '#18181B' }}
-          name="noi"
+          activeDot={{ r: 4, fill: '#10b981' }}
+          name="ini"
         />
         <Line
           type="monotone"
           dataKey="runningBalance"
-          stroke="#A1A1AA"
+          stroke="#94a3b8"
           strokeWidth={1.5}
           strokeDasharray="4 4"
           dot={false}
-          name="cumulative"
+          name="acumulado"
         />
       </LineChart>
     </ResponsiveContainer>
@@ -111,8 +111,8 @@ function CustomLabel({ cx, cy, midAngle, innerRadius, outerRadius, percent }: an
 export function ExpenseBreakdownChart({ data }: { data: CategoryBreakdown[] }) {
   if (data.length === 0) {
     return (
-      <div className="h-[220px] flex items-center justify-center text-sm text-zinc-400">
-        No expense data
+      <div className="h-[220px] flex items-center justify-center text-sm text-slate-500">
+        Sin datos de gastos
       </div>
     )
   }
@@ -136,7 +136,7 @@ export function ExpenseBreakdownChart({ data }: { data: CategoryBreakdown[] }) {
           </Pie>
           <Tooltip
             formatter={(v: any) => [`$${Number(v).toLocaleString()}`, '']}
-            contentStyle={{ fontSize: 12, border: '1px solid #E4E4E7', borderRadius: 8 }}
+            contentStyle={{ fontSize: 12, background: '#ffffff', border: '1px solid #e8edf0', borderRadius: 8, color: '#1a1a2e' }}
           />
         </PieChart>
       </ResponsiveContainer>
@@ -144,8 +144,8 @@ export function ExpenseBreakdownChart({ data }: { data: CategoryBreakdown[] }) {
         {data.map((entry) => (
           <div key={entry.name} className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-sm shrink-0" style={{ background: entry.color }} />
-            <span className="text-xs text-zinc-600 capitalize flex-1">{entry.name}</span>
-            <span className="text-xs font-medium text-zinc-900 tabular-nums">
+            <span className="text-xs text-[#64748b] capitalize flex-1">{entry.name}</span>
+            <span className="text-xs font-medium text-[#1a1a2e] tabular-nums">
               ${Number(entry.value).toLocaleString()}
             </span>
           </div>

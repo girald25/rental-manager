@@ -33,7 +33,7 @@ export default async function DocumentsPage() {
   const totalSize = docs.reduce((s, d) => s + (d.file_size ? Number(d.file_size) : 0), 0)
 
   return (
-    <div className="p-8">
+    <div className="p-4 md:p-8">
       <DocumentsClient
         documents={docs}
         buildings={(buildings ?? []) as Building[]}

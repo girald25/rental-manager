@@ -15,7 +15,7 @@ export default async function UnitsPage() {
   ])
 
   return (
-    <div className="p-8">
+    <div className="p-4 md:p-8">
       <UnitsClient units={units ?? []} buildings={buildings ?? []} />
     </div>
   )

@@ -13,31 +13,31 @@ import type { Document, DocumentCategory, Building, Tenant, ActionState } from '
 
 // ── Styles ────────────────────────────────────────────────
 const input =
-  'w-full border border-zinc-200 rounded-md px-3 py-2 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-1 focus:ring-zinc-900 focus:border-zinc-900 transition-colors'
+  'w-full border border-[#e8edf0] dark:border-[#2d3148] rounded-md px-3 py-2 text-sm text-zinc-900 dark:text-slate-100 placeholder:text-zinc-400 dark:placeholder:text-slate-500 bg-white dark:bg-[#252836] focus:outline-none focus:ring-1 focus:ring-emerald-500 dark:focus:ring-emerald-500 focus:border-emerald-500 dark:focus:border-emerald-500 transition-colors'
 const selectCls =
-  'w-full border border-zinc-200 rounded-md px-3 py-2 text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-zinc-900 focus:border-zinc-900 transition-colors bg-white'
-const lbl = 'block text-xs font-medium text-zinc-600 mb-1.5'
+  'w-full border border-[#e8edf0] dark:border-[#2d3148] rounded-md px-3 py-2 text-sm text-zinc-900 dark:text-slate-100 focus:outline-none focus:ring-1 focus:ring-emerald-500 dark:focus:ring-emerald-500 focus:border-emerald-500 dark:focus:border-emerald-500 transition-colors bg-white dark:bg-[#252836]'
+const lbl = 'block text-xs font-medium text-zinc-600 dark:text-slate-400 mb-1.5'
 
 const CATEGORIES: DocumentCategory[] = [
   'contract', 'lease', 'photo', 'invoice', 'inspection', 'other',
 ]
 
 const CATEGORY_LABELS: Record<DocumentCategory, string> = {
-  contract:   'Contract',
-  lease:      'Lease',
-  photo:      'Photo',
-  invoice:    'Invoice',
-  inspection: 'Inspection',
-  other:      'Other',
+  contract:   'Contrato',
+  lease:      'Arrendamiento',
+  photo:      'Foto',
+  invoice:    'Factura',
+  inspection: 'Inspección',
+  other:      'Otro',
 }
 
 const CATEGORY_COLORS: Record<DocumentCategory, string> = {
-  contract:   'bg-violet-50 text-violet-700 border border-violet-100',
-  lease:      'bg-blue-50 text-blue-700 border border-blue-100',
-  photo:      'bg-emerald-50 text-emerald-700 border border-emerald-100',
-  invoice:    'bg-amber-50 text-amber-700 border border-amber-100',
-  inspection: 'bg-orange-50 text-orange-700 border border-orange-100',
-  other:      'bg-zinc-100 text-zinc-600',
+  contract:   'bg-violet-50 text-violet-700 border border-violet-100 dark:bg-violet-500/10 dark:text-violet-400 dark:border-violet-500/20',
+  lease:      'bg-blue-50 text-blue-700 border border-blue-100 dark:bg-blue-500/10 dark:text-blue-400 dark:border-blue-500/20',
+  photo:      'bg-emerald-50 text-emerald-700 border border-emerald-100 dark:bg-emerald-500/10 dark:text-emerald-400 dark:border-emerald-500/20',
+  invoice:    'bg-amber-50 text-amber-700 border border-amber-100 dark:bg-amber-500/10 dark:text-amber-400 dark:border-amber-500/20',
+  inspection: 'bg-orange-50 text-orange-700 border border-orange-100 dark:bg-orange-500/10 dark:text-orange-400 dark:border-orange-500/20',
+  other:      'bg-zinc-100 text-zinc-600 dark:bg-white/5 dark:text-slate-400',
 }
 
 // Detect file type from URL or explicit file_type
@@ -55,7 +55,7 @@ function FileIcon({ doc, size = 20 }: { doc: Document; size?: number }) {
   if (type === 'pdf')   return <FileText size={size} className={`${cls} text-red-400`} />
   if (type === 'image') return <FileImage size={size} className={`${cls} text-emerald-500`} />
   if (type === 'doc')   return <FileText size={size} className={`${cls} text-blue-400`} />
-  return <File size={size} className={`${cls} text-zinc-400`} />
+  return <File size={size} className={`${cls} text-zinc-400 dark:text-slate-500`} />
 }
 
 function formatSize(bytes: number | null): string {
@@ -95,26 +95,26 @@ function DocumentForm({
   return (
     <form action={formAction} className="space-y-4">
       {state?.error && (
-        <p className="text-xs text-red-600 bg-red-50 border border-red-100 px-3 py-2 rounded-md">
+        <p className="text-xs text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-500/10 border border-red-100 dark:border-red-500/20 px-3 py-2 rounded-md">
           {state.error}
         </p>
       )}
 
       {/* Name */}
       <div>
-        <label className={lbl}>Document Name</label>
+        <label className={lbl}>Nombre del Documento</label>
         <input
           name="name"
           required
           defaultValue={doc?.name}
-          placeholder="e.g. Lease Agreement - Unit 4B"
+          placeholder="ej. Contrato de Arrendamiento - Unidad 4B"
           className={input}
         />
       </div>
 
       {/* Category */}
       <div>
-        <label className={lbl}>Category</label>
+        <label className={lbl}>Categoría</label>
         <select name="category" required defaultValue={doc?.category ?? 'other'} className={selectCls}>
           {CATEGORIES.map((c) => (
             <option key={c} value={c}>{CATEGORY_LABELS[c]}</option>
@@ -124,23 +124,23 @@ function DocumentForm({
 
       {/* File URL */}
       <div>
-        <label className={lbl}>File URL</label>
+        <label className={lbl}>URL del Archivo</label>
         <input
           name="file_url"
           required
           defaultValue={doc?.file_url}
-          placeholder="https://drive.google.com/… or Dropbox link"
+          placeholder="https://drive.google.com/… o enlace de Dropbox"
           className={input}
         />
-        <p className="text-xs text-zinc-400 mt-1">
-          Paste a Google Drive, Dropbox, or any direct link.
+        <p className="text-xs text-[#94a3b8] dark:text-slate-500 mt-1">
+          Pega un enlace de Google Drive, Dropbox u otro enlace directo.
         </p>
       </div>
 
       {/* File type + size */}
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div>
-          <label className={lbl}>File Type</label>
+          <label className={lbl}>Tipo de Archivo</label>
           <input
             name="file_type"
             defaultValue={doc?.file_type ?? ''}
@@ -149,38 +149,38 @@ function DocumentForm({
           />
         </div>
         <div>
-          <label className={lbl}>File Size (bytes)</label>
+          <label className={lbl}>Tamaño del Archivo (bytes)</label>
           <input
             name="file_size"
             type="number"
             min="0"
             defaultValue={doc?.file_size ?? ''}
-            placeholder="Optional"
+            placeholder="Opcional"
             className={input}
           />
         </div>
       </div>
 
       {/* Building + Unit */}
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div>
-          <label className={lbl}>Building</label>
+          <label className={lbl}>Edificio</label>
           <select
             name="building_id"
             defaultValue={doc?.building_id ?? ''}
             className={selectCls}
             onChange={(e) => setSelectedBuilding(e.target.value)}
           >
-            <option value="">None</option>
+            <option value="">Ninguno</option>
             {buildings.map((b) => <option key={b.id} value={b.id}>{b.name}</option>)}
           </select>
         </div>
         <div>
-          <label className={lbl}>Unit (optional)</label>
+          <label className={lbl}>Unidad (opcional)</label>
           <select name="unit_id" defaultValue={doc?.unit_id ?? ''} className={selectCls}>
-            <option value="">None</option>
+            <option value="">Ninguna</option>
             {filteredUnits.map((u: any) => (
-              <option key={u.id} value={u.id}>Unit {u.unit_number}</option>
+              <option key={u.id} value={u.id}>Unidad {u.unit_number}</option>
             ))}
           </select>
         </div>
@@ -188,9 +188,9 @@ function DocumentForm({
 
       {/* Tenant */}
       <div>
-        <label className={lbl}>Tenant (optional)</label>
+        <label className={lbl}>Inquilino (opcional)</label>
         <select name="tenant_id" defaultValue={doc?.tenant_id ?? ''} className={selectCls}>
-          <option value="">None</option>
+          <option value="">Ninguno</option>
           {tenants.map((t) => (
             <option key={t.id} value={t.id}>{t.first_name} {t.last_name}</option>
           ))}
@@ -199,17 +199,17 @@ function DocumentForm({
 
       {/* Description */}
       <div>
-        <label className={lbl}>Notes / Description</label>
+        <label className={lbl}>Notas / Descripción</label>
         <textarea
           name="description"
           rows={2}
           defaultValue={doc?.description ?? ''}
-          placeholder="Optional notes…"
+          placeholder="Notas opcionales…"
           className={`${input} resize-none`}
         />
       </div>
 
-      <SubmitButton label={doc ? 'Save changes' : 'Add document'} />
+      <SubmitButton label={doc ? 'Guardar cambios' : 'Añadir documento'} />
     </form>
   )
 }
@@ -227,20 +227,20 @@ function DocumentCard({
   const isImage = detectFileType(doc) === 'image'
 
   return (
-    <div className="bg-white border border-zinc-200 rounded-lg p-4 hover:border-zinc-300 hover:shadow-sm transition-all group flex flex-col gap-3">
+    <div className="bg-white dark:bg-[#1e2130] border border-[#e8edf0] dark:border-[#2d3148] rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.06)] p-4 hover:border-zinc-300 dark:hover:border-[#3d4268] hover:shadow-sm transition-all group flex flex-col gap-3">
       {/* Top row */}
       <div className="flex items-start gap-3">
-        <div className="w-9 h-9 bg-zinc-50 border border-zinc-100 rounded-lg flex items-center justify-center shrink-0">
+        <div className="w-9 h-9 bg-zinc-50 dark:bg-[#141520] border border-[#f0f4f0] dark:border-[#2d3148] rounded-xl flex items-center justify-center shrink-0">
           <FileIcon doc={doc} size={18} />
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-medium text-zinc-900 truncate leading-snug">{doc.name}</p>
+          <p className="text-sm font-medium text-[#1a1a2e] dark:text-slate-100 truncate leading-snug">{doc.name}</p>
           <div className="flex items-center gap-1.5 mt-1 flex-wrap">
             <span className={`text-xs px-1.5 py-0.5 rounded font-medium ${CATEGORY_COLORS[doc.category]}`}>
               {CATEGORY_LABELS[doc.category]}
             </span>
             {doc.file_type && (
-              <span className="text-xs text-zinc-400 uppercase">{doc.file_type}</span>
+              <span className="text-xs text-[#94a3b8] dark:text-slate-500 uppercase">{doc.file_type}</span>
             )}
           </div>
         </div>
@@ -250,17 +250,17 @@ function DocumentCard({
       {(doc.building || doc.unit || doc.tenant) && (
         <div className="flex flex-wrap gap-1.5">
           {doc.building && (
-            <span className="text-xs bg-zinc-50 border border-zinc-100 text-zinc-600 px-2 py-0.5 rounded-md">
+            <span className="text-xs bg-zinc-50 dark:bg-[#141520] border border-[#f0f4f0] dark:border-[#2d3148] text-zinc-600 dark:text-slate-400 px-2 py-0.5 rounded-md">
               {doc.building.name}
             </span>
           )}
           {doc.unit && (
-            <span className="text-xs bg-zinc-50 border border-zinc-100 text-zinc-600 px-2 py-0.5 rounded-md">
-              Unit {doc.unit.unit_number}
+            <span className="text-xs bg-zinc-50 dark:bg-[#141520] border border-[#f0f4f0] dark:border-[#2d3148] text-zinc-600 dark:text-slate-400 px-2 py-0.5 rounded-md">
+              Unidad {doc.unit.unit_number}
             </span>
           )}
           {doc.tenant && (
-            <span className="text-xs bg-zinc-50 border border-zinc-100 text-zinc-600 px-2 py-0.5 rounded-md">
+            <span className="text-xs bg-zinc-50 dark:bg-[#141520] border border-[#f0f4f0] dark:border-[#2d3148] text-zinc-600 dark:text-slate-400 px-2 py-0.5 rounded-md">
               {doc.tenant.first_name} {doc.tenant.last_name}
             </span>
           )}
@@ -269,12 +269,12 @@ function DocumentCard({
 
       {/* Description */}
       {doc.description && (
-        <p className="text-xs text-zinc-500 leading-relaxed line-clamp-2">{doc.description}</p>
+        <p className="text-xs text-[#64748b] dark:text-slate-400 leading-relaxed line-clamp-2">{doc.description}</p>
       )}
 
       {/* Footer */}
-      <div className="flex items-center justify-between mt-auto pt-1 border-t border-zinc-50">
-        <div className="flex items-center gap-2 text-xs text-zinc-400">
+      <div className="flex items-center justify-between mt-auto pt-1 border-t border-[#f8fafc] dark:border-[#252836]">
+        <div className="flex items-center gap-2 text-xs text-[#94a3b8] dark:text-slate-500">
           <span className="tabular-nums">
             {new Date(doc.created_at).toLocaleDateString('en-US', {
               month: 'short', day: 'numeric', year: 'numeric',
@@ -282,7 +282,7 @@ function DocumentCard({
           </span>
           {doc.file_size && (
             <>
-              <span className="text-zinc-200">·</span>
+              <span className="text-zinc-200 dark:text-slate-700">·</span>
               <span>{formatSize(doc.file_size)}</span>
             </>
           )}
@@ -292,22 +292,22 @@ function DocumentCard({
             href={doc.file_url}
             target="_blank"
             rel="noopener noreferrer"
-            className="p-1.5 text-zinc-400 hover:text-zinc-700 hover:bg-zinc-100 rounded-md transition-colors"
-            title="Open file"
+            className="p-1.5 text-zinc-400 dark:text-slate-500 hover:text-zinc-700 dark:hover:text-slate-100 hover:bg-zinc-100 dark:hover:bg-white/5 rounded-md transition-colors"
+            title="Abrir archivo"
           >
             <ExternalLink size={13} />
           </a>
           <button
             onClick={onEdit}
-            className="p-1.5 text-zinc-400 hover:text-zinc-700 hover:bg-zinc-100 rounded-md transition-colors"
-            title="Edit"
+            className="p-1.5 text-zinc-400 dark:text-slate-500 hover:text-zinc-700 dark:hover:text-slate-100 hover:bg-zinc-100 dark:hover:bg-white/5 rounded-md transition-colors"
+            title="Editar"
           >
             <Pencil size={13} />
           </button>
           <button
             onClick={onDelete}
             className="p-1.5 text-zinc-400 hover:text-red-600 hover:bg-red-50 rounded-md transition-colors"
-            title="Delete"
+            title="Eliminar"
           >
             <Trash2 size={13} />
           </button>
@@ -370,37 +370,37 @@ export default function DocumentsClient({
       {/* Header */}
       <div className="flex items-start justify-between mb-8">
         <div>
-          <h1 className="text-xl font-semibold text-zinc-900">Documents</h1>
-          <p className="text-sm text-zinc-400 mt-0.5">
-            {documents.length} document{documents.length !== 1 ? 's' : ''}
-            {totalSize > 0 && <> · {formatTotalSize(totalSize)} stored</>}
+          <h1 className="text-xl font-semibold text-[#1a1a2e] dark:text-slate-100">Documentos</h1>
+          <p className="text-sm text-[#94a3b8] dark:text-slate-500 mt-0.5">
+            {documents.length} documento{documents.length !== 1 ? 's' : ''}
+            {totalSize > 0 && <> · {formatTotalSize(totalSize)} almacenado{totalSize !== 1 ? 's' : ''}</>}
           </p>
         </div>
         <button
           onClick={() => { setCreateKey((k) => k + 1); setShowCreate(true) }}
-          className="flex items-center gap-1.5 px-3 py-1.5 bg-zinc-900 text-white text-sm font-medium rounded-md hover:bg-zinc-700 transition-colors"
+          className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 text-white text-sm font-medium rounded-xl hover:bg-emerald-500 transition-colors"
         >
           <Plus size={14} />
-          Add document
+          Añadir documento
         </button>
       </div>
 
       {/* Stats row */}
-      <div className="grid grid-cols-3 gap-4 mb-8">
-        <div className="bg-white border border-zinc-200 rounded-lg p-4">
-          <p className="text-xs font-medium text-zinc-400 uppercase tracking-wide mb-2">Total Documents</p>
-          <p className="text-2xl font-semibold text-zinc-900">{documents.length}</p>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+        <div className="bg-white dark:bg-[#1e2130] border border-[#e8edf0] dark:border-[#2d3148] rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.06)] p-4">
+          <p className="text-xs font-medium text-[#94a3b8] dark:text-slate-500 uppercase tracking-wide mb-2">Total Documentos</p>
+          <p className="text-2xl font-semibold text-[#1a1a2e] dark:text-slate-100">{documents.length}</p>
         </div>
-        <div className="bg-white border border-zinc-200 rounded-lg p-4">
-          <p className="text-xs font-medium text-zinc-400 uppercase tracking-wide mb-2">Storage Tracked</p>
-          <p className="text-2xl font-semibold text-zinc-900">{totalSize > 0 ? formatTotalSize(totalSize) : '—'}</p>
-          <p className="text-xs text-zinc-400 mt-1">based on recorded file sizes</p>
+        <div className="bg-white dark:bg-[#1e2130] border border-[#e8edf0] dark:border-[#2d3148] rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.06)] p-4">
+          <p className="text-xs font-medium text-[#94a3b8] dark:text-slate-500 uppercase tracking-wide mb-2">Almacenamiento Registrado</p>
+          <p className="text-2xl font-semibold text-[#1a1a2e] dark:text-slate-100">{totalSize > 0 ? formatTotalSize(totalSize) : '—'}</p>
+          <p className="text-xs text-[#94a3b8] dark:text-slate-500 mt-1">basado en tamaños de archivos registrados</p>
         </div>
-        <div className="bg-white border border-zinc-200 rounded-lg p-4">
-          <p className="text-xs font-medium text-zinc-400 uppercase tracking-wide mb-3">By Category</p>
+        <div className="bg-white dark:bg-[#1e2130] border border-[#e8edf0] dark:border-[#2d3148] rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.06)] p-4">
+          <p className="text-xs font-medium text-[#94a3b8] dark:text-slate-500 uppercase tracking-wide mb-3">Por Categoría</p>
           <div className="flex flex-wrap gap-x-3 gap-y-1">
             {CATEGORIES.filter((c) => counts[c] > 0).map((c) => (
-              <div key={c} className="flex items-center gap-1 text-xs text-zinc-600">
+              <div key={c} className="flex items-center gap-1 text-xs text-zinc-600 dark:text-slate-400">
                 <span className={`w-1.5 h-1.5 rounded-full inline-block ${
                   c === 'contract'   ? 'bg-violet-400' :
                   c === 'lease'      ? 'bg-blue-400' :
@@ -409,10 +409,10 @@ export default function DocumentsClient({
                   c === 'inspection' ? 'bg-orange-400' :
                   'bg-zinc-400'
                 }`} />
-                {CATEGORY_LABELS[c]} <span className="text-zinc-400">{counts[c]}</span>
+                {CATEGORY_LABELS[c]} <span className="text-[#94a3b8] dark:text-slate-500">{counts[c]}</span>
               </div>
             ))}
-            {documents.length === 0 && <span className="text-zinc-400 text-xs">No documents yet</span>}
+            {documents.length === 0 && <span className="text-[#94a3b8] dark:text-slate-500 text-xs">Sin documentos aún</span>}
           </div>
         </div>
       </div>
@@ -423,26 +423,26 @@ export default function DocumentsClient({
         <input
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          placeholder="Search documents…"
-          className="text-sm border border-zinc-200 rounded-md px-3 py-1.5 text-zinc-700 placeholder:text-zinc-400 focus:outline-none focus:ring-1 focus:ring-zinc-900 w-52"
+          placeholder="Buscar documentos…"
+          className="text-sm border border-[#e8edf0] dark:border-[#2d3148] rounded-md px-3 py-1.5 text-zinc-700 dark:text-slate-300 placeholder:text-zinc-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 dark:focus:ring-emerald-500 bg-white dark:bg-[#252836] w-52"
         />
 
         {/* Category pills */}
         <div className="flex items-center gap-1">
           <button
             onClick={() => setFilterCategory('all')}
-            className={`px-2.5 py-1 text-xs font-medium rounded-md transition-colors ${
-              filterCategory === 'all' ? 'bg-zinc-900 text-white' : 'text-zinc-600 hover:bg-zinc-100'
+            className={`px-2.5 py-1 text-xs font-medium rounded-full transition-colors ${
+              filterCategory === 'all' ? 'bg-emerald-600 text-white' : 'text-zinc-600 dark:text-slate-400 hover:bg-zinc-100 dark:hover:bg-white/5'
             }`}
           >
-            All
+            Todos
           </button>
           {CATEGORIES.map((c) => (
             <button
               key={c}
               onClick={() => setFilterCategory(filterCategory === c ? 'all' : c)}
-              className={`px-2.5 py-1 text-xs font-medium rounded-md transition-colors ${
-                filterCategory === c ? 'bg-zinc-900 text-white' : 'text-zinc-600 hover:bg-zinc-100'
+              className={`px-2.5 py-1 text-xs font-medium rounded-full transition-colors ${
+                filterCategory === c ? 'bg-emerald-600 text-white' : 'text-zinc-600 dark:text-slate-400 hover:bg-zinc-100 dark:hover:bg-white/5'
               }`}
             >
               {CATEGORY_LABELS[c]}
@@ -454,9 +454,9 @@ export default function DocumentsClient({
         <select
           value={filterBuilding}
           onChange={(e) => { setFilterBuilding(e.target.value); setFilterUnit('') }}
-          className="text-xs border border-zinc-200 rounded-md px-2.5 py-1.5 text-zinc-600 focus:outline-none focus:ring-1 focus:ring-zinc-900 bg-white ml-auto"
+          className="text-xs border border-[#e8edf0] dark:border-[#2d3148] rounded-md px-2.5 py-1.5 text-zinc-600 dark:text-slate-400 focus:outline-none focus:ring-1 focus:ring-emerald-500 dark:focus:ring-emerald-500 bg-white dark:bg-[#252836] ml-auto"
         >
-          <option value="">All buildings</option>
+          <option value="">Todos los edificios</option>
           {buildings.map((b) => <option key={b.id} value={b.id}>{b.name}</option>)}
         </select>
 
@@ -464,9 +464,9 @@ export default function DocumentsClient({
         <select
           value={filterUnit}
           onChange={(e) => setFilterUnit(e.target.value)}
-          className="text-xs border border-zinc-200 rounded-md px-2.5 py-1.5 text-zinc-600 focus:outline-none focus:ring-1 focus:ring-zinc-900 bg-white"
+          className="text-xs border border-[#e8edf0] dark:border-[#2d3148] rounded-md px-2.5 py-1.5 text-zinc-600 dark:text-slate-400 focus:outline-none focus:ring-1 focus:ring-emerald-500 dark:focus:ring-emerald-500 bg-white dark:bg-[#252836]"
         >
-          <option value="">All units</option>
+          <option value="">Todas las unidades</option>
           {filteredUnitsForFilter.map((u: any) => (
             <option key={u.id} value={u.id}>Unit {u.unit_number}</option>
           ))}
@@ -476,14 +476,14 @@ export default function DocumentsClient({
       {/* Grid */}
       {filtered.length === 0 ? (
         <div className="py-24 text-center">
-          <FolderOpen size={32} className="mx-auto text-zinc-200 mb-4" />
+          <FolderOpen size={32} className="mx-auto text-zinc-200 dark:text-slate-700 mb-4" />
           {documents.length === 0 ? (
             <>
-              <p className="text-sm font-medium text-zinc-600 mb-1">No documents yet</p>
-              <p className="text-xs text-zinc-400">Add Google Drive, Dropbox, or other file links</p>
+              <p className="text-sm font-medium text-zinc-600 dark:text-slate-400 mb-1">Sin documentos aún</p>
+              <p className="text-xs text-[#94a3b8] dark:text-slate-500">Añade enlaces de Google Drive, Dropbox u otros archivos</p>
             </>
           ) : (
-            <p className="text-sm text-zinc-400">No documents match your filters</p>
+            <p className="text-sm text-[#94a3b8] dark:text-slate-500">Ningún documento coincide con los filtros</p>
           )}
         </div>
       ) : (
@@ -494,7 +494,7 @@ export default function DocumentsClient({
               doc={doc}
               onEdit={() => { setEditKey((k) => k + 1); setEditingDoc(doc) }}
               onDelete={async () => {
-                if (!confirm(`Delete "${doc.name}"?`)) return
+                if (!confirm(`¿Eliminar "${doc.name}"?`)) return
                 await deleteDocument(doc.id)
               }}
             />
@@ -504,7 +504,7 @@ export default function DocumentsClient({
 
       {/* Create modal */}
       {showCreate && (
-        <Modal key={createKey} open title="Add Document" onClose={() => setShowCreate(false)}>
+        <Modal key={createKey} open title="Añadir Documento" onClose={() => setShowCreate(false)}>
           <DocumentForm
             buildings={buildings}
             units={units}
@@ -520,7 +520,7 @@ export default function DocumentsClient({
 
       {/* Edit modal */}
       {editingDoc && (
-        <Modal key={editKey} open title="Edit Document" onClose={() => setEditingDoc(null)}>
+        <Modal key={editKey} open title="Editar Documento" onClose={() => setEditingDoc(null)}>
           <DocumentForm
             doc={editingDoc}
             buildings={buildings}

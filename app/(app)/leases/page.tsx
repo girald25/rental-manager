@@ -19,7 +19,7 @@ export default async function LeasesPage() {
   ])
 
   return (
-    <div className="p-8">
+    <div className="p-4 md:p-8">
       <LeasesClient leases={leases ?? []} units={units ?? []} tenants={tenants ?? []} />
     </div>
   )

@@ -12,11 +12,11 @@ const fmt = (n: number) =>
 
 const fmtDate = (d: string | null) => {
   if (!d) return '—'
-  return new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+  return new Date(d).toLocaleDateString('es-PR', { month: 'short', day: 'numeric', year: 'numeric' })
 }
 
 const fmtToday = () =>
-  new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
+  new Date().toLocaleDateString('es-PR', { month: 'long', day: 'numeric', year: 'numeric' })
 
 function monthOf(dateStr: string) {
   const d = new Date(dateStr)
@@ -34,7 +34,7 @@ function getMonthsInRange(from: string, to: string) {
     result.push({
       year: cur.getFullYear(),
       month: cur.getMonth() + 1,
-      label: cur.toLocaleDateString('en-US', { month: 'short', year: '2-digit' }),
+      label: cur.toLocaleDateString('es-PR', { month: 'short', year: '2-digit' }),
     })
     cur.setMonth(cur.getMonth() + 1)
   }
@@ -52,8 +52,8 @@ function defaultDateRange() {
 
 // ── Shared table styles ───────────────────────────────────
 const thCls =
-  'text-left text-xs font-semibold text-zinc-500 uppercase tracking-wide px-3 py-2.5 border-b border-zinc-200 bg-zinc-50 print:bg-zinc-100'
-const tdCls = 'px-3 py-2.5 text-sm text-zinc-700 border-b border-zinc-100'
+  'text-left text-xs font-semibold text-[#94a3b8] dark:text-slate-400 uppercase tracking-wide px-3 py-2.5 border-b border-[#e8edf0] dark:border-[#2d3148] bg-zinc-50 dark:bg-[#141520] print:bg-zinc-100'
+const tdCls = 'px-3 py-2.5 text-sm text-zinc-700 dark:text-slate-300 border-b border-zinc-100 dark:border-[#2d3148]'
 const tdNumCls = `${tdCls} tabular-nums`
 
 // ── Print Header ─────────────────────────────────────────
@@ -75,11 +75,11 @@ function PrintHeader({ title, subtitle }: { title: string; subtitle?: string }) 
 }
 
 // ── Print button ──────────────────────────────────────────
-function PrintButton({ label = 'Print / Save as PDF' }: { label?: string }) {
+function PrintButton({ label = 'Imprimir / Guardar como PDF' }: { label?: string }) {
   return (
     <button
       onClick={() => window.print()}
-      className="print:hidden flex items-center gap-2 px-3 py-1.5 bg-zinc-900 text-white text-sm font-medium rounded-md hover:bg-zinc-700 transition-colors"
+      className="print:hidden flex items-center gap-2 px-3 py-1.5 bg-emerald-600 text-white text-sm font-medium rounded-xl hover:bg-emerald-500 transition-colors"
     >
       <Printer size={14} />
       {label}
@@ -90,22 +90,38 @@ function PrintButton({ label = 'Print / Save as PDF' }: { label?: string }) {
 // ── Status badge (screen only) ────────────────────────────
 function StatusBadge({ status }: { status: string }) {
   const cls: Record<string, string> = {
-    active:      'bg-emerald-50 text-emerald-700 border border-emerald-100',
-    expired:     'bg-zinc-100 text-zinc-500',
-    terminated:  'bg-red-50 text-red-600 border border-red-100',
-    occupied:    'bg-blue-50 text-blue-700 border border-blue-100',
-    vacant:      'bg-zinc-100 text-zinc-500',
-    paid:        'bg-emerald-50 text-emerald-700 border border-emerald-100',
-    pending:     'bg-amber-50 text-amber-700 border border-amber-100',
-    late:        'bg-red-50 text-red-600 border border-red-100',
-    open:        'bg-zinc-100 text-zinc-600',
-    in_progress: 'bg-blue-50 text-blue-700 border border-blue-100',
-    completed:   'bg-emerald-50 text-emerald-700 border border-emerald-100',
-    on_hold:     'bg-amber-50 text-amber-700 border border-amber-100',
+    active:      'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-900/50',
+    expired:     'bg-zinc-100 dark:bg-white/10 text-zinc-500 dark:text-slate-400',
+    terminated:  'bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-400 border border-red-100 dark:border-red-900/50',
+    occupied:    'bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-400 border border-blue-100 dark:border-blue-900/50',
+    vacant:      'bg-zinc-100 dark:bg-white/10 text-zinc-500 dark:text-slate-400',
+    paid:        'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-900/50',
+    pending:     'bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 border border-amber-100 dark:border-amber-900/50',
+    late:        'bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-400 border border-red-100 dark:border-red-900/50',
+    open:        'bg-zinc-100 dark:bg-white/10 text-zinc-600 dark:text-slate-400',
+    in_progress: 'bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-400 border border-blue-100 dark:border-blue-900/50',
+    completed:   'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-900/50',
+    on_hold:     'bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 border border-amber-100 dark:border-amber-900/50',
   }
-  const label = status.replace('_', ' ').replace(/\b\w/g, (c) => c.toUpperCase())
+
+  const LABEL_MAP: Record<string, string> = {
+    paid:        'Pagado',
+    pending:     'Pendiente',
+    late:        'Atrasado',
+    active:      'Activo',
+    expired:     'Vencido',
+    terminated:  'Terminado',
+    occupied:    'Ocupado',
+    vacant:      'Vacante',
+    open:        'Abierto',
+    in_progress: 'En Progreso',
+    completed:   'Completado',
+    on_hold:     'En Pausa',
+  }
+
+  const label = LABEL_MAP[status] ?? status.replace('_', ' ').replace(/\b\w/g, (c) => c.toUpperCase())
   return (
-    <span className={`text-xs px-2 py-0.5 rounded-full font-medium capitalize print:text-xs print:bg-transparent print:border-none print:px-0 print:py-0 ${cls[status] ?? 'bg-zinc-100 text-zinc-500'}`}>
+    <span className={`text-xs px-2 py-0.5 rounded-full font-medium capitalize print:text-xs print:bg-transparent print:border-none print:px-0 print:py-0 ${cls[status] ?? 'bg-zinc-100 dark:bg-white/10 text-zinc-500 dark:text-slate-400'}`}>
       {label}
     </span>
   )
@@ -130,7 +146,7 @@ function RentRollReport({
     buildingMap.get(bid)!.push(u)
   }
   for (const [bid, us] of buildingMap) {
-    const b = buildings.find((b: any) => b.id === bid) ?? us[0]?.building ?? { id: bid, name: 'Unknown Building' }
+    const b = buildings.find((b: any) => b.id === bid) ?? us[0]?.building ?? { id: bid, name: 'Edificio Desconocido' }
     byBuilding.push({ building: b, units: us.sort((a, b) => a.unit_number.localeCompare(b.unit_number)) })
   }
   byBuilding.sort((a, b) => a.building.name.localeCompare(b.building.name))
@@ -149,27 +165,27 @@ function RentRollReport({
     .reduce((s: number, l: any) => s + Number(l.rent_amount), 0)
 
   if (total === 0) {
-    return <EmptyState message="No units found." />
+    return <EmptyState message="Sin datos para este período" />
   }
 
   return (
     <div>
-      <PrintHeader title="Rent Roll Report" subtitle={filterBuilding ? buildings.find((b:any)=>b.id===filterBuilding)?.name : 'All Properties'} />
+      <PrintHeader title="Lista de Rentas" subtitle={filterBuilding ? buildings.find((b:any)=>b.id===filterBuilding)?.name : 'Todas las Propiedades'} />
 
       {byBuilding.map(({ building, units: bUnits }) => (
         <div key={building.id} className="mb-8 print:mb-6">
-          <h3 className="text-sm font-semibold text-zinc-900 mb-2 print:text-base">{building.name}</h3>
+          <h3 className="text-sm font-semibold text-[#1a1a2e] dark:text-slate-100 mb-2 print:text-base">{building.name}</h3>
           <div className="overflow-x-auto">
             <table className="w-full border-collapse">
               <thead>
                 <tr>
-                  <th className={thCls}>Unit</th>
-                  <th className={thCls}>Tenant</th>
-                  <th className={thCls}>Lease Start</th>
-                  <th className={thCls}>Lease End</th>
-                  <th className={`${thCls} text-right`}>Monthly Rent</th>
-                  <th className={thCls}>Lease Status</th>
-                  <th className={thCls}>Unit Status</th>
+                  <th className={thCls}>Unidad</th>
+                  <th className={thCls}>Inquilino</th>
+                  <th className={thCls}>Inicio</th>
+                  <th className={thCls}>Fin</th>
+                  <th className={`${thCls} text-right`}>Renta Mensual</th>
+                  <th className={thCls}>Estado Contrato</th>
+                  <th className={thCls}>Estado Unidad</th>
                 </tr>
               </thead>
               <tbody>
@@ -181,7 +197,7 @@ function RentRollReport({
                       <td className={tdCls}>
                         {lease?.tenant
                           ? `${lease.tenant.first_name} ${lease.tenant.last_name}`
-                          : <span className="text-zinc-300">—</span>}
+                          : <span className="text-zinc-300 dark:text-slate-600">—</span>}
                       </td>
                       <td className={tdNumCls}>{lease?.start_date ? fmtDate(lease.start_date) : '—'}</td>
                       <td className={tdNumCls}>{lease?.end_date ? fmtDate(lease.end_date) : '—'}</td>
@@ -189,7 +205,7 @@ function RentRollReport({
                         {lease?.rent_amount ? fmt(Number(lease.rent_amount)) : '—'}
                       </td>
                       <td className={tdCls}>
-                        {lease ? <StatusBadge status={lease.status} /> : <span className="text-zinc-300 text-xs">—</span>}
+                        {lease ? <StatusBadge status={lease.status} /> : <span className="text-zinc-300 dark:text-slate-600 text-xs">—</span>}
                       </td>
                       <td className={tdCls}><StatusBadge status={unit.status} /></td>
                     </tr>
@@ -202,18 +218,18 @@ function RentRollReport({
       ))}
 
       {/* Vacancy summary */}
-      <div className="mt-6 pt-5 border-t border-zinc-200">
-        <h3 className="text-sm font-semibold text-zinc-900 mb-3 print:text-base">Vacancy Summary</h3>
+      <div className="mt-6 pt-5 border-t border-[#e8edf0] dark:border-[#2d3148]">
+        <h3 className="text-sm font-semibold text-[#1a1a2e] dark:text-slate-100 mb-3 print:text-base">Resumen de Vacancia</h3>
         <div className="grid grid-cols-4 gap-4 print:grid-cols-4">
           {[
-            { label: 'Total Units', value: String(total) },
-            { label: 'Occupied', value: `${occupied} (${total ? Math.round(occupied/total*100) : 0}%)` },
-            { label: 'Vacant', value: `${vacant} (${total ? Math.round(vacant/total*100) : 0}%)` },
-            { label: 'Total Monthly Rent', value: fmt(totalRent) },
+            { label: 'Total Unidades', value: String(total) },
+            { label: 'Ocupadas', value: `${occupied} (${total ? Math.round(occupied/total*100) : 0}%)` },
+            { label: 'Vacantes', value: `${vacant} (${total ? Math.round(vacant/total*100) : 0}%)` },
+            { label: 'Renta Mensual Total', value: fmt(totalRent) },
           ].map(({ label, value }) => (
-            <div key={label} className="bg-zinc-50 border border-zinc-100 rounded-lg p-3 print:border print:border-zinc-300 print:rounded-none">
-              <p className="text-xs text-zinc-400 mb-1 uppercase tracking-wide">{label}</p>
-              <p className="text-sm font-semibold text-zinc-900">{value}</p>
+            <div key={label} className="bg-zinc-50 dark:bg-[#141520] border border-[#f0f4f0] dark:border-[#2d3148] rounded-xl p-3 print:border print:border-zinc-300 print:rounded-none">
+              <p className="text-xs text-[#94a3b8] dark:text-slate-500 mb-1 uppercase tracking-wide">{label}</p>
+              <p className="text-sm font-semibold text-[#1a1a2e] dark:text-slate-100">{value}</p>
             </div>
           ))}
         </div>
@@ -257,24 +273,24 @@ function FinancialSummaryReport({
   return (
     <div>
       <PrintHeader
-        title="Financial Summary Report"
+        title="Resumen Financiero"
         subtitle={`${fmtDate(from)} – ${fmtDate(to)}`}
       />
 
       {/* Key metrics */}
       <div className="grid grid-cols-4 gap-3 mb-8 print:mb-6">
         {[
-          { label: 'Total Income', value: fmt(totalIncome), highlight: true },
-          { label: 'Total Expenses', value: fmt(totalExpenses) },
-          { label: 'NOI', value: fmt(noi), highlight: noi >= 0 },
-          { label: 'Expense Ratio', value: oer != null ? `${oer.toFixed(1)}%` : '—' },
+          { label: 'Ingresos Totales', value: fmt(totalIncome), highlight: true },
+          { label: 'Gastos Totales', value: fmt(totalExpenses) },
+          { label: 'INO', value: fmt(noi), highlight: noi >= 0 },
+          { label: 'Ratio de Gastos', value: oer != null ? `${oer.toFixed(1)}%` : '—' },
         ].map(({ label, value, highlight }) => (
           <div
             key={label}
-            className={`border rounded-lg p-3 print:rounded-none print:border-zinc-300 ${highlight ? 'border-zinc-900 bg-zinc-900 print:bg-white print:border-zinc-900' : 'border-zinc-200 bg-white'}`}
+            className={`border rounded-xl p-3 print:rounded-none print:border-zinc-300 ${highlight ? 'border-zinc-900 dark:border-emerald-600 bg-zinc-900 dark:bg-emerald-600/20 print:bg-white print:border-zinc-900' : 'border-[#e8edf0] dark:border-[#2d3148] bg-white dark:bg-[#1e2130]'}`}
           >
-            <p className={`text-xs uppercase tracking-wide mb-1.5 ${highlight ? 'text-zinc-400 print:text-zinc-500' : 'text-zinc-400'}`}>{label}</p>
-            <p className={`text-lg font-semibold tabular-nums ${highlight ? 'text-white print:text-zinc-900' : 'text-zinc-900'}`}>{value}</p>
+            <p className={`text-xs uppercase tracking-wide mb-1.5 ${highlight ? 'text-zinc-400 print:text-zinc-500' : 'text-[#94a3b8] dark:text-slate-500'}`}>{label}</p>
+            <p className={`text-lg font-semibold tabular-nums ${highlight ? 'text-white dark:text-emerald-400 print:text-zinc-900' : 'text-[#1a1a2e] dark:text-slate-100'}`}>{value}</p>
           </div>
         ))}
       </div>
@@ -283,49 +299,49 @@ function FinancialSummaryReport({
       {(cashOnCash !== null || capRate !== null) && (
         <div className="grid grid-cols-3 gap-3 mb-8 print:mb-6">
           {cashOnCash !== null && (
-            <div className="border border-zinc-200 rounded-lg p-3 print:rounded-none print:border-zinc-300">
-              <p className="text-xs text-zinc-400 uppercase tracking-wide mb-1">Cash-on-Cash Return</p>
-              <p className="text-base font-semibold text-zinc-900">{cashOnCash.toFixed(2)}%</p>
+            <div className="border border-[#e8edf0] dark:border-[#2d3148] rounded-xl p-3 print:rounded-none print:border-zinc-300 bg-white dark:bg-[#1e2130]">
+              <p className="text-xs text-[#94a3b8] dark:text-slate-500 uppercase tracking-wide mb-1">Retorno sobre Inversión</p>
+              <p className="text-base font-semibold text-[#1a1a2e] dark:text-slate-100">{cashOnCash.toFixed(2)}%</p>
             </div>
           )}
           {capRate !== null && (
-            <div className="border border-zinc-200 rounded-lg p-3 print:rounded-none print:border-zinc-300">
-              <p className="text-xs text-zinc-400 uppercase tracking-wide mb-1">Cap Rate</p>
-              <p className="text-base font-semibold text-zinc-900">{capRate.toFixed(2)}%</p>
+            <div className="border border-[#e8edf0] dark:border-[#2d3148] rounded-xl p-3 print:rounded-none print:border-zinc-300 bg-white dark:bg-[#1e2130]">
+              <p className="text-xs text-[#94a3b8] dark:text-slate-500 uppercase tracking-wide mb-1">Tasa de Capitalización</p>
+              <p className="text-base font-semibold text-[#1a1a2e] dark:text-slate-100">{capRate.toFixed(2)}%</p>
             </div>
           )}
         </div>
       )}
 
       {/* Monthly breakdown */}
-      <h3 className="text-sm font-semibold text-zinc-900 mb-3 print:text-base">Month-by-Month Breakdown</h3>
+      <h3 className="text-sm font-semibold text-[#1a1a2e] dark:text-slate-100 mb-3 print:text-base">Desglose Mes a Mes</h3>
       <table className="w-full border-collapse">
         <thead>
           <tr>
-            <th className={thCls}>Month</th>
-            <th className={`${thCls} text-right`}>Income</th>
-            <th className={`${thCls} text-right`}>Expenses</th>
-            <th className={`${thCls} text-right`}>NOI</th>
+            <th className={thCls}>Mes</th>
+            <th className={`${thCls} text-right`}>Ingresos</th>
+            <th className={`${thCls} text-right`}>Gastos</th>
+            <th className={`${thCls} text-right`}>INO</th>
           </tr>
         </thead>
         <tbody>
           {monthly.map((row) => (
             <tr key={row.label}>
               <td className={`${tdCls} font-medium`}>{row.label}</td>
-              <td className={`${tdNumCls} text-right`}>{row.income > 0 ? fmt(row.income) : <span className="text-zinc-300">—</span>}</td>
-              <td className={`${tdNumCls} text-right`}>{row.expenses > 0 ? fmt(row.expenses) : <span className="text-zinc-300">—</span>}</td>
-              <td className={`${tdNumCls} text-right font-medium ${row.noi < 0 ? 'text-red-600' : 'text-zinc-900'}`}>
-                {row.noi !== 0 ? fmt(row.noi) : <span className="text-zinc-300">—</span>}
+              <td className={`${tdNumCls} text-right`}>{row.income > 0 ? fmt(row.income) : <span className="text-zinc-300 dark:text-slate-600">—</span>}</td>
+              <td className={`${tdNumCls} text-right`}>{row.expenses > 0 ? fmt(row.expenses) : <span className="text-zinc-300 dark:text-slate-600">—</span>}</td>
+              <td className={`${tdNumCls} text-right font-medium ${row.noi < 0 ? 'text-red-600 dark:text-red-400' : 'text-[#1a1a2e] dark:text-slate-100'}`}>
+                {row.noi !== 0 ? fmt(row.noi) : <span className="text-zinc-300 dark:text-slate-600">—</span>}
               </td>
             </tr>
           ))}
         </tbody>
         <tfoot>
-          <tr className="border-t-2 border-zinc-300">
-            <td className="px-3 py-2.5 text-sm font-semibold text-zinc-900">Total</td>
-            <td className="px-3 py-2.5 text-sm font-semibold text-right tabular-nums text-zinc-900">{fmt(totalIncome)}</td>
-            <td className="px-3 py-2.5 text-sm font-semibold text-right tabular-nums text-zinc-900">{fmt(totalExpenses)}</td>
-            <td className={`px-3 py-2.5 text-sm font-semibold text-right tabular-nums ${noi < 0 ? 'text-red-600' : 'text-zinc-900'}`}>{fmt(noi)}</td>
+          <tr className="border-t-2 border-zinc-300 dark:border-[#2d3148]">
+            <td className="px-3 py-2.5 text-sm font-semibold text-[#1a1a2e] dark:text-slate-100">Total</td>
+            <td className="px-3 py-2.5 text-sm font-semibold text-right tabular-nums text-[#1a1a2e] dark:text-slate-100">{fmt(totalIncome)}</td>
+            <td className="px-3 py-2.5 text-sm font-semibold text-right tabular-nums text-[#1a1a2e] dark:text-slate-100">{fmt(totalExpenses)}</td>
+            <td className={`px-3 py-2.5 text-sm font-semibold text-right tabular-nums ${noi < 0 ? 'text-red-600 dark:text-red-400' : 'text-[#1a1a2e] dark:text-slate-100'}`}>{fmt(noi)}</td>
           </tr>
         </tfoot>
       </table>
@@ -340,7 +356,7 @@ function TenantLedgerReport({
   tenantId: string; tenants: any[]; leases: any[]; payments: any[]
 }) {
   const tenant = tenants.find((t: any) => t.id === tenantId)
-  if (!tenant) return <EmptyState message="Select a tenant to generate the ledger." />
+  if (!tenant) return <EmptyState message="Selecciona un inquilino para generar el libro." />
 
   const tenantLeases = leases.filter((l: any) => l.tenant?.id === tenantId || l.tenant_id === tenantId)
   const leaseIds = new Set(tenantLeases.map((l: any) => l.id))
@@ -352,25 +368,25 @@ function TenantLedgerReport({
 
   return (
     <div>
-      <PrintHeader title="Tenant Ledger" subtitle={`${tenant.first_name} ${tenant.last_name}`} />
+      <PrintHeader title="Libro del Inquilino" subtitle={`${tenant.first_name} ${tenant.last_name}`} />
 
       {/* Tenant info */}
-      <div className="bg-zinc-50 border border-zinc-200 rounded-lg p-4 mb-6 print:border-zinc-300 print:rounded-none print:bg-white">
+      <div className="bg-zinc-50 dark:bg-[#141520] border border-[#e8edf0] dark:border-[#2d3148] rounded-xl p-4 mb-6 print:border-zinc-300 print:rounded-none print:bg-white">
         <div className="grid grid-cols-3 gap-4">
           <div>
-            <p className="text-xs text-zinc-400 mb-0.5">Tenant</p>
-            <p className="text-sm font-semibold text-zinc-900">{tenant.first_name} {tenant.last_name}</p>
+            <p className="text-xs text-[#94a3b8] dark:text-slate-500 mb-0.5">Inquilino</p>
+            <p className="text-sm font-semibold text-[#1a1a2e] dark:text-slate-100">{tenant.first_name} {tenant.last_name}</p>
           </div>
           {tenant.email && (
             <div>
-              <p className="text-xs text-zinc-400 mb-0.5">Email</p>
-              <p className="text-sm text-zinc-700">{tenant.email}</p>
+              <p className="text-xs text-[#94a3b8] dark:text-slate-500 mb-0.5">Correo</p>
+              <p className="text-sm text-zinc-700 dark:text-slate-300">{tenant.email}</p>
             </div>
           )}
           {tenant.phone && (
             <div>
-              <p className="text-xs text-zinc-400 mb-0.5">Phone</p>
-              <p className="text-sm text-zinc-700">{tenant.phone}</p>
+              <p className="text-xs text-[#94a3b8] dark:text-slate-500 mb-0.5">Teléfono</p>
+              <p className="text-sm text-zinc-700 dark:text-slate-300">{tenant.phone}</p>
             </div>
           )}
         </div>
@@ -378,44 +394,44 @@ function TenantLedgerReport({
 
       {/* Each lease */}
       {tenantLeases.length === 0 ? (
-        <p className="text-sm text-zinc-400">No leases found for this tenant.</p>
+        <p className="text-sm text-[#94a3b8] dark:text-slate-500">Sin contratos encontrados para este inquilino.</p>
       ) : (
         tenantLeases.map((lease: any) => {
           const leasePayments = tenantPayments.filter((p: any) => p.lease?.id === lease.id || p.lease_id === lease.id)
           return (
             <div key={lease.id} className="mb-8 print:mb-6">
               <div className="flex items-center gap-3 mb-3">
-                <h3 className="text-sm font-semibold text-zinc-900 print:text-base">
-                  {lease.unit?.building?.name} — Unit {lease.unit?.unit_number}
+                <h3 className="text-sm font-semibold text-[#1a1a2e] dark:text-slate-100 print:text-base">
+                  {lease.unit?.building?.name} — Unidad {lease.unit?.unit_number}
                 </h3>
                 <StatusBadge status={lease.status} />
               </div>
-              <div className="flex gap-6 text-xs text-zinc-500 mb-3">
-                <span>Lease: {fmtDate(lease.start_date)} – {fmtDate(lease.end_date)}</span>
-                <span>Rent: {fmt(Number(lease.rent_amount))}/month</span>
-                <span>Deposit: {fmt(Number(lease.deposit_amount))}</span>
+              <div className="flex gap-6 text-xs text-[#64748b] dark:text-slate-400 mb-3">
+                <span>Contrato: {fmtDate(lease.start_date)} – {fmtDate(lease.end_date)}</span>
+                <span>Renta: {fmt(Number(lease.rent_amount))}/mes</span>
+                <span>Depósito: {fmt(Number(lease.deposit_amount))}</span>
               </div>
 
               {leasePayments.length === 0 ? (
-                <p className="text-xs text-zinc-400">No payments recorded.</p>
+                <p className="text-xs text-[#94a3b8] dark:text-slate-500">Sin pagos registrados.</p>
               ) : (
                 <table className="w-full border-collapse">
                   <thead>
                     <tr>
-                      <th className={thCls}>Due Date</th>
-                      <th className={thCls}>Paid Date</th>
-                      <th className={`${thCls} text-right`}>Amount</th>
-                      <th className={thCls}>Method</th>
-                      <th className={thCls}>Status</th>
+                      <th className={thCls}>Vencimiento</th>
+                      <th className={thCls}>Pagado</th>
+                      <th className={`${thCls} text-right`}>Monto</th>
+                      <th className={thCls}>Método</th>
+                      <th className={thCls}>Estado</th>
                     </tr>
                   </thead>
                   <tbody>
                     {leasePayments.map((p: any) => (
                       <tr key={p.id}>
                         <td className={tdNumCls}>{fmtDate(p.due_date)}</td>
-                        <td className={tdNumCls}>{p.paid_date ? fmtDate(p.paid_date) : <span className="text-zinc-300">—</span>}</td>
+                        <td className={tdNumCls}>{p.paid_date ? fmtDate(p.paid_date) : <span className="text-zinc-300 dark:text-slate-600">—</span>}</td>
                         <td className={`${tdNumCls} text-right font-medium`}>{fmt(Number(p.amount))}</td>
-                        <td className={tdCls}>{p.payment_method ?? <span className="text-zinc-300">—</span>}</td>
+                        <td className={tdCls}>{p.payment_method ?? <span className="text-zinc-300 dark:text-slate-600">—</span>}</td>
                         <td className={tdCls}><StatusBadge status={p.status} /></td>
                       </tr>
                     ))}
@@ -428,17 +444,17 @@ function TenantLedgerReport({
       )}
 
       {/* Summary */}
-      <div className="mt-6 pt-5 border-t border-zinc-200">
-        <h3 className="text-sm font-semibold text-zinc-900 mb-3 print:text-base">Account Summary</h3>
+      <div className="mt-6 pt-5 border-t border-[#e8edf0] dark:border-[#2d3148]">
+        <h3 className="text-sm font-semibold text-[#1a1a2e] dark:text-slate-100 mb-3 print:text-base">Resumen de Cuenta</h3>
         <div className="grid grid-cols-3 gap-4">
           {[
-            { label: 'Total Paid', value: fmt(totalPaid), color: 'text-emerald-700' },
-            { label: 'Balance Pending', value: fmt(totalPending), color: totalPending > 0 ? 'text-amber-700' : 'text-zinc-900' },
-            { label: 'Total Payments', value: String(tenantPayments.length) },
+            { label: 'Total Pagado', value: fmt(totalPaid), color: 'text-emerald-700 dark:text-emerald-400' },
+            { label: 'Balance Pendiente', value: fmt(totalPending), color: totalPending > 0 ? 'text-amber-700 dark:text-amber-400' : 'text-[#1a1a2e] dark:text-slate-100' },
+            { label: 'Total Pagos', value: String(tenantPayments.length) },
           ].map(({ label, value, color }) => (
-            <div key={label} className="bg-zinc-50 border border-zinc-100 rounded-lg p-3 print:border-zinc-300 print:rounded-none print:bg-white">
-              <p className="text-xs text-zinc-400 mb-1 uppercase tracking-wide">{label}</p>
-              <p className={`text-sm font-semibold ${color ?? 'text-zinc-900'}`}>{value}</p>
+            <div key={label} className="bg-zinc-50 dark:bg-[#141520] border border-[#f0f4f0] dark:border-[#2d3148] rounded-xl p-3 print:border-zinc-300 print:rounded-none print:bg-white">
+              <p className="text-xs text-[#94a3b8] dark:text-slate-500 mb-1 uppercase tracking-wide">{label}</p>
+              <p className={`text-sm font-semibold ${color ?? 'text-[#1a1a2e] dark:text-slate-100'}`}>{value}</p>
             </div>
           ))}
         </div>
@@ -470,32 +486,36 @@ function MaintenanceSummaryReport({
   const completed = filtered.filter((m: any) => m.status === 'completed').length
 
   const priorityBadge: Record<string, string> = {
-    urgent: 'text-red-700', high: 'text-orange-700',
-    medium: 'text-amber-700', low: 'text-zinc-500',
+    urgent: 'text-red-700 dark:text-red-400', high: 'text-orange-700 dark:text-orange-400',
+    medium: 'text-amber-700 dark:text-amber-400', low: 'text-zinc-500 dark:text-slate-400',
+  }
+
+  const PRIORITY_LABELS: Record<string, string> = {
+    urgent: 'Urgente', high: 'Alta', medium: 'Media', low: 'Baja',
   }
 
   if (filtered.length === 0) {
-    return <EmptyState message="No maintenance requests found." />
+    return <EmptyState message="Sin datos para este período" />
   }
 
   return (
     <div>
       <PrintHeader
-        title="Maintenance Summary"
-        subtitle={filterBuilding ? buildings.find((b:any)=>b.id===filterBuilding)?.name : 'All Properties'}
+        title="Resumen de Mantenimiento"
+        subtitle={filterBuilding ? buildings.find((b:any)=>b.id===filterBuilding)?.name : 'Todas las Propiedades'}
       />
 
       {/* Status counts */}
       <div className="grid grid-cols-4 gap-3 mb-8 print:mb-6">
         {[
           { label: 'Total', value: String(filtered.length) },
-          { label: 'Open', value: String(open) },
-          { label: 'In Progress', value: String(inProgress) },
-          { label: 'Completed', value: String(completed) },
+          { label: 'Abiertos', value: String(open) },
+          { label: 'En Progreso', value: String(inProgress) },
+          { label: 'Completados', value: String(completed) },
         ].map(({ label, value }) => (
-          <div key={label} className="bg-zinc-50 border border-zinc-100 rounded-lg p-3 print:border-zinc-300 print:rounded-none print:bg-white">
-            <p className="text-xs text-zinc-400 uppercase tracking-wide mb-1">{label}</p>
-            <p className="text-lg font-semibold text-zinc-900">{value}</p>
+          <div key={label} className="bg-zinc-50 dark:bg-[#141520] border border-[#f0f4f0] dark:border-[#2d3148] rounded-xl p-3 print:border-zinc-300 print:rounded-none print:bg-white">
+            <p className="text-xs text-[#94a3b8] dark:text-slate-500 uppercase tracking-wide mb-1">{label}</p>
+            <p className="text-lg font-semibold text-[#1a1a2e] dark:text-slate-100">{value}</p>
           </div>
         ))}
       </div>
@@ -503,35 +523,35 @@ function MaintenanceSummaryReport({
       {/* By building */}
       {Array.from(byBuilding.entries()).map(([bid, requests]) => {
         const building = buildings.find((b: any) => b.id === bid) ??
-          requests[0]?.unit?.building ?? { name: 'Unknown Building' }
+          requests[0]?.unit?.building ?? { name: 'Edificio Desconocido' }
         return (
           <div key={bid} className="mb-8 print:mb-6">
-            <h3 className="text-sm font-semibold text-zinc-900 mb-2 print:text-base">{building.name}</h3>
+            <h3 className="text-sm font-semibold text-[#1a1a2e] dark:text-slate-100 mb-2 print:text-base">{building.name}</h3>
             <table className="w-full border-collapse">
               <thead>
                 <tr>
-                  <th className={thCls}>Unit</th>
-                  <th className={thCls}>Title</th>
-                  <th className={thCls}>Priority</th>
-                  <th className={thCls}>Status</th>
-                  <th className={thCls}>Opened</th>
-                  <th className={thCls}>Completed</th>
+                  <th className={thCls}>Unidad</th>
+                  <th className={thCls}>Título</th>
+                  <th className={thCls}>Prioridad</th>
+                  <th className={thCls}>Estado</th>
+                  <th className={thCls}>Reportado</th>
+                  <th className={thCls}>Resuelto</th>
                 </tr>
               </thead>
               <tbody>
                 {requests.map((m: any) => (
                   <tr key={m.id}>
                     <td className={`${tdCls} font-medium`}>
-                      {m.unit?.unit_number ? `Unit ${m.unit.unit_number}` : '—'}
+                      {m.unit?.unit_number ? `Unidad ${m.unit.unit_number}` : '—'}
                     </td>
                     <td className={tdCls}>{m.title}</td>
-                    <td className={`${tdCls} capitalize font-medium ${priorityBadge[m.priority] ?? ''}`}>
-                      {m.priority}
+                    <td className={`${tdCls} font-medium ${priorityBadge[m.priority] ?? ''}`}>
+                      {PRIORITY_LABELS[m.priority] ?? m.priority}
                     </td>
                     <td className={tdCls}><StatusBadge status={m.status} /></td>
                     <td className={tdNumCls}>{fmtDate(m.created_at)}</td>
                     <td className={tdNumCls}>
-                      {m.completed_at ? fmtDate(m.completed_at) : <span className="text-zinc-300">—</span>}
+                      {m.completed_at ? fmtDate(m.completed_at) : <span className="text-zinc-300 dark:text-slate-600">—</span>}
                     </td>
                   </tr>
                 ))}
@@ -547,7 +567,7 @@ function MaintenanceSummaryReport({
 // ── Empty state ───────────────────────────────────────────
 function EmptyState({ message }: { message: string }) {
   return (
-    <div className="py-16 text-center text-sm text-zinc-400 print:hidden">
+    <div className="py-16 text-center text-sm text-[#94a3b8] dark:text-slate-500 print:hidden">
       {message}
     </div>
   )
@@ -555,7 +575,7 @@ function EmptyState({ message }: { message: string }) {
 
 // ── Select style ──────────────────────────────────────────
 const selCls =
-  'border border-zinc-200 rounded-md px-3 py-1.5 text-sm text-zinc-700 focus:outline-none focus:ring-1 focus:ring-zinc-900 bg-white print:hidden'
+  'border border-[#e8edf0] dark:border-[#2d3148] rounded-md px-3 py-1.5 text-sm text-zinc-700 dark:text-slate-300 focus:outline-none focus:ring-1 focus:ring-emerald-500 dark:focus:ring-emerald-500 bg-white dark:bg-[#252836] print:hidden'
 
 // ── Main component ────────────────────────────────────────
 export default function ReportsClient({
@@ -590,27 +610,27 @@ export default function ReportsClient({
   const REPORT_DEFS = [
     {
       id: 'rent-roll' as ReportType,
-      label: 'Rent Roll',
+      label: 'Lista de Rentas',
       icon: FileSpreadsheet,
-      description: 'Units with tenant info, lease dates, rent amounts',
+      description: 'Unidades con inquilino, fechas de contrato y rentas',
     },
     {
       id: 'financial' as ReportType,
-      label: 'Financial Summary',
+      label: 'Resumen Financiero',
       icon: TrendingUp,
-      description: 'Income, expenses, NOI, and key metrics',
+      description: 'Ingresos, gastos, INO y métricas clave',
     },
     {
       id: 'tenant-ledger' as ReportType,
-      label: 'Tenant Ledger',
+      label: 'Libro del Inquilino',
       icon: User,
-      description: 'Full payment history for a tenant',
+      description: 'Historial completo de pagos de un inquilino',
     },
     {
       id: 'maintenance' as ReportType,
-      label: 'Maintenance Summary',
+      label: 'Resumen de Mantenimiento',
       icon: Wrench,
-      description: 'All requests grouped by building',
+      description: 'Todas las solicitudes agrupadas por edificio',
     },
   ]
 
@@ -619,31 +639,31 @@ export default function ReportsClient({
       {/* Page header */}
       <div className="flex items-start justify-between mb-8 print:hidden">
         <div>
-          <h1 className="text-xl font-semibold text-zinc-900">Reports</h1>
-          <p className="text-sm text-zinc-400 mt-0.5">Generate and print property reports</p>
+          <h1 className="text-xl font-semibold text-[#1a1a2e] dark:text-slate-100">Informes</h1>
+          <p className="text-sm text-[#94a3b8] dark:text-slate-500 mt-0.5">Genera e imprime informes de la propiedad</p>
         </div>
       </div>
 
       <div className="flex gap-7">
         {/* Left: report selector */}
         <div className="w-56 shrink-0 print:hidden">
-          <p className="text-xs font-semibold text-zinc-400 uppercase tracking-wide mb-3">Report Type</p>
+          <p className="text-xs font-semibold text-[#94a3b8] dark:text-slate-500 uppercase tracking-wide mb-3">Tipo de Informe</p>
           <div className="space-y-1">
             {REPORT_DEFS.map(({ id, label, icon: Icon, description }) => (
               <button
                 key={id}
                 onClick={() => setActiveReport(id)}
-                className={`w-full text-left px-3 py-3 rounded-lg transition-colors group ${
+                className={`w-full text-left px-3 py-3 rounded-xl transition-colors group ${
                   activeReport === id
-                    ? 'bg-zinc-900 text-white'
-                    : 'hover:bg-zinc-100 text-zinc-700'
+                    ? 'bg-emerald-600 text-white'
+                    : 'hover:bg-[#fafbfc] dark:hover:bg-white/5 text-zinc-700 dark:text-slate-400'
                 }`}
               >
                 <div className="flex items-center gap-2.5 mb-0.5">
-                  <Icon size={14} className={activeReport === id ? 'text-zinc-300' : 'text-zinc-400'} />
+                  <Icon size={14} className={activeReport === id ? 'text-emerald-200' : 'text-zinc-400 dark:text-slate-500'} />
                   <span className="text-sm font-medium">{label}</span>
                 </div>
-                <p className={`text-xs ml-[22px] leading-snug ${activeReport === id ? 'text-zinc-400' : 'text-zinc-400'}`}>
+                <p className={`text-xs ml-[22px] leading-snug ${activeReport === id ? 'text-emerald-200' : 'text-[#94a3b8] dark:text-slate-500'}`}>
                   {description}
                 </p>
               </button>
@@ -658,9 +678,9 @@ export default function ReportsClient({
             {/* Rent Roll filters */}
             {activeReport === 'rent-roll' && (
               <>
-                <p className="text-sm font-medium text-zinc-700 mr-1">Rent Roll</p>
+                <p className="text-sm font-medium text-zinc-700 dark:text-slate-300 mr-1">Lista de Rentas</p>
                 <select value={rrBuilding} onChange={(e) => setRrBuilding(e.target.value)} className={selCls}>
-                  <option value="">All buildings</option>
+                  <option value="">Todos los edificios</option>
                   {buildings.map((b: any) => <option key={b.id} value={b.id}>{b.name}</option>)}
                 </select>
               </>
@@ -669,13 +689,13 @@ export default function ReportsClient({
             {/* Financial filters */}
             {activeReport === 'financial' && (
               <>
-                <p className="text-sm font-medium text-zinc-700 mr-1">Financial Summary</p>
+                <p className="text-sm font-medium text-zinc-700 dark:text-slate-300 mr-1">Resumen Financiero</p>
                 <div className="flex items-center gap-2">
-                  <label className="text-xs text-zinc-500">From</label>
+                  <label className="text-xs text-[#64748b] dark:text-slate-400">Desde</label>
                   <input type="date" value={finFrom} onChange={(e) => setFinFrom(e.target.value)} className={selCls} />
                 </div>
                 <div className="flex items-center gap-2">
-                  <label className="text-xs text-zinc-500">To</label>
+                  <label className="text-xs text-[#64748b] dark:text-slate-400">Hasta</label>
                   <input type="date" value={finTo} onChange={(e) => setFinTo(e.target.value)} className={selCls} />
                 </div>
               </>
@@ -684,9 +704,9 @@ export default function ReportsClient({
             {/* Tenant ledger */}
             {activeReport === 'tenant-ledger' && (
               <>
-                <p className="text-sm font-medium text-zinc-700 mr-1">Tenant Ledger</p>
+                <p className="text-sm font-medium text-zinc-700 dark:text-slate-300 mr-1">Libro del Inquilino</p>
                 <select value={ledgerTenant} onChange={(e) => setLedgerTenant(e.target.value)} className={selCls}>
-                  <option value="">Select tenant…</option>
+                  <option value="">Seleccionar inquilino…</option>
                   {tenants.map((t: any) => (
                     <option key={t.id} value={t.id}>{t.first_name} {t.last_name}</option>
                   ))}
@@ -697,16 +717,16 @@ export default function ReportsClient({
             {/* Maintenance filters */}
             {activeReport === 'maintenance' && (
               <>
-                <p className="text-sm font-medium text-zinc-700 mr-1">Maintenance Summary</p>
+                <p className="text-sm font-medium text-zinc-700 dark:text-slate-300 mr-1">Resumen de Mantenimiento</p>
                 <select value={maintBuilding} onChange={(e) => setMaintBuilding(e.target.value)} className={selCls}>
-                  <option value="">All buildings</option>
+                  <option value="">Todos los edificios</option>
                   {buildings.map((b: any) => <option key={b.id} value={b.id}>{b.name}</option>)}
                 </select>
                 <select value={maintStatus} onChange={(e) => setMaintStatus(e.target.value)} className={selCls}>
-                  <option value="">All statuses</option>
-                  <option value="open">Open</option>
-                  <option value="in_progress">In Progress</option>
-                  <option value="completed">Completed</option>
+                  <option value="">Todos los estados</option>
+                  <option value="open">Abierto</option>
+                  <option value="in_progress">En Progreso</option>
+                  <option value="completed">Completado</option>
                 </select>
               </>
             )}
@@ -717,7 +737,7 @@ export default function ReportsClient({
           </div>
 
           {/* Report content card */}
-          <div className="bg-white border border-zinc-200 rounded-xl p-6 print:border-none print:rounded-none print:p-0 print:shadow-none">
+          <div className="bg-white dark:bg-[#1e2130] border border-[#e8edf0] dark:border-[#2d3148] rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.06)] p-6 print:border-none print:rounded-none print:p-0 print:shadow-none">
             {activeReport === 'rent-roll' && (
               <RentRollReport
                 units={units}
